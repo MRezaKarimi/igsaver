@@ -20,15 +20,12 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: Container(
-              // padding: EdgeInsets.only(top: 70.0, bottom: 60.0),
-              child: Center(
-                child: Text(
-                  'IGSaver',
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: Colors.white,
-                  ),
+            child: Center(
+              child: Text(
+                'IGSaver',
+                style: TextStyle(
+                  fontSize: 40,
+                  color: Colors.white,
                 ),
               ),
             ),
