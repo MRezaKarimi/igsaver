@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:igsaver/constants.dart';
+import 'package:igsaver/pages/settings.dart';
 
 class Home extends StatefulWidget {
   static const route = '/';
@@ -108,7 +109,9 @@ class _HomeState extends State<Home> {
                         onPressed: () {},
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, Settings.route);
+                        },
                         icon: Icon(
                           CupertinoIcons.settings,
                           color: kPrimaryColor,
