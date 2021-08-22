@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
-const Color kPrimaryColor = Color(0xffc13584);
+import 'package:igsaver/constants.dart';
 
 class Home extends StatefulWidget {
   static const route = '/';
@@ -107,6 +106,7 @@ class _HomeState extends State<Home> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
+                          side: BorderSide(color: kPrimaryColor),
                         ),
                         onPressed: () {},
                       ),
