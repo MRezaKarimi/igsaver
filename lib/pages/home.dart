@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 const Color kPrimaryColor = Color(0xffc13584);
 
 class Home extends StatefulWidget {
+  static const route = '/';
+
   @override
   _HomeState createState() => _HomeState();
 }
