@@ -20,21 +20,3 @@ class IGSaver extends StatelessWidget {
     );
   }
 }
-// Row(
-//   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//   children: [
-//     Text(
-//       'Watch Clipboard',
-//       style: TextStyle(
-//         fontSize: 17,
-//         color: kPrimaryColor,
-//       ),
-//     ),
-//     Switch(
-//       value: false,
-//       activeColor: kPrimaryColor,
-//       activeTrackColor: kPrimaryColor,
-//       onChanged: (value) {},
-//     ),
-//   ],
-// ),
