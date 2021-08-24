@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart' as flutterServices show Clipboard;
 
 class Clipboard {
@@ -7,16 +6,16 @@ class Clipboard {
 
   Stream<String> getClipboardData() async* {
     String? currentData;
-    print(currentData);
+
     while (_active) {
-      var clipboardData = await flutterServices.Clipboard.getData(
-          flutterServices.Clipboard.kTextPlain);
-      if (clipboardData?.text != null && clipboardData?.text != currentData) {
-        currentData = clipboardData!.text;
-        yield currentData!;
+      var clipboardData = await flutterServices.Clipboard.getData('text/plain');
+      if (clipboardData != null) {
+        if (clipboardData.text != currentData) {
+          currentData = clipboardData.text;
+          yield currentData!;
+        }
       }
       await Future.delayed(Duration(milliseconds: 500));
-      // sleep(Duration(milliseconds: 500));
     }
   }
 
