@@ -1,18 +1,20 @@
 import 'dart:convert';
-import 'file_downloader.dart';
 import 'package:http/http.dart' as http;
+import 'file_downloader.dart';
+import 'package:igsaver/services/url_validator.dart';
 
 class InstagramDownloader {
   final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
   final String postApi = '';
+  final URLValidator urlValidator = URLValidator();
   final FileDownloader fileDownloader = FileDownloader();
 
   void getPost(String url) async {
-    if (url == '') {
+    if (!urlValidator.isValid(url)) {
       return;
     }
 
-    var data = await _fetchData(url);
+    var data = await _fetchData(urlValidator.removeParams(url));
     _dispatch(data);
   }
 
