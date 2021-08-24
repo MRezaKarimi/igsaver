@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:igsaver/services/instagram_downloader.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:igsaver/constants.dart';
@@ -11,6 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  InstagramDownloader instagramDownloader = InstagramDownloader();
+  String? url;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,15 +74,21 @@ class _HomeState extends State<Home> {
                             hintText: 'Paste Link Here',
                             isDense: true,
                           ),
+                          keyboardType: TextInputType.url,
+                          onChanged: (value) {
+                            url = value;
+                          },
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
                         icon: Icon(
                           CupertinoIcons.arrow_down_circle,
                           color: kPrimaryColor,
                           size: 35,
                         ),
+                        onPressed: () {
+                          instagramDownloader.getPost(url ?? '');
+                        },
                       ),
                     ],
                   ),
