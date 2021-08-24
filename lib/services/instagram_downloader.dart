@@ -6,6 +6,8 @@ import 'package:igsaver/exceptions/exceptions.dart';
 
 class InstagramDownloader {
   final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
+  final String profileAPI =
+      'https://www.instagram.com/graphql/query/?query_hash=';
   final URLValidator urlValidator = URLValidator();
   final FileDownloader fileDownloader = FileDownloader();
 
@@ -17,6 +19,31 @@ class InstagramDownloader {
     _dispatch(data);
   }
 
+  void downloadProfile(String username) async {
+    int userId = await _getUserId(username);
+    await _fetchProfileData(userId);
+  }
+
+  Future<dynamic> _getUserId(String username) async {
+    http.Response response =
+        await http.get(Uri.parse('https://www.instagram.com/$username/?__a=1'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['graphql']['user']['id'];
+    } else if (response.statusCode == 404) {
+      throw NotFoundException('User not found');
+    }
+  }
+
+  Future<void> _fetchProfileData(int userId, {int numOfPosts: 12}) async {
+    http.Response response = await http.get(Uri.parse(profileAPI +
+        queryHash +
+        '&variables={"id":"$userId","first":$numOfPosts}'));
+
+    return jsonDecode(response.body)['data']['user']
+        ['edge_owner_to_timeline_media']['edges'];
+  }
+
   Future<dynamic> _fetchPostData(String url) async {
     http.Response response = await http.get(Uri.parse(url + '?__a=1'));
 
@@ -24,7 +51,7 @@ class InstagramDownloader {
       return jsonDecode(response.body)['graphql']['shortcode_media'];
     } else if (response.statusCode == 404) {
       throw NotFoundException(
-          'Post not found. The post may be removed or URL is broken.');
+          'Post not found. The post may be removed or URL is broken');
     }
   }
 
