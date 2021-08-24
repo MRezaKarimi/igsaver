@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'file_downloader.dart';
 import 'package:igsaver/services/url_validator.dart';
+import 'package:igsaver/exceptions/exceptions.dart';
 
 class InstagramDownloader {
   final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
@@ -80,22 +81,4 @@ class InstagramDownloader {
 
     fileDownloader.download(videoURL, videoFilename, isVideo: true);
   }
-}
-
-class NotFoundException implements Exception {
-  final String message;
-
-  NotFoundException(this.message);
-
-  @override
-  String toString() => message;
-}
-
-class UnknownPostTypeException implements Exception {
-  final String message;
-
-  UnknownPostTypeException(this.message);
-
-  @override
-  String toString() => message;
 }
