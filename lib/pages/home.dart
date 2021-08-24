@@ -1,10 +1,9 @@
-import 'dart:io';
+import 'package:igsaver/services/clipboard.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/settings.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class Home extends StatefulWidget {
   static const route = '/';
@@ -15,7 +14,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   InstagramDownloader instagramDownloader = InstagramDownloader();
+  Clipboard clipboard = Clipboard();
   String? url;
+
+  void watchClipboard() async {
+    await for (var data in clipboard.getClipboardData()) {
+      instagramDownloader.getPost(data);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    watchClipboard();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,5 +151,11 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    clipboard.stop();
+    super.dispose();
   }
 }
