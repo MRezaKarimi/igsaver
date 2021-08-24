@@ -5,14 +5,14 @@ class Clipboard {
   bool _active = true;
 
   Stream<String> getClipboardData() async* {
-    String? currentData;
+    String currentData = '';
 
     while (_active) {
       var clipboardData = await flutterServices.Clipboard.getData('text/plain');
       if (clipboardData != null) {
         if (clipboardData.text != currentData) {
-          currentData = clipboardData.text;
-          yield currentData!;
+          currentData = clipboardData.text!;
+          yield currentData;
         }
       }
       await Future.delayed(Duration(milliseconds: 500));
