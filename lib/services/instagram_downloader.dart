@@ -6,20 +6,18 @@ import 'package:igsaver/exceptions/exceptions.dart';
 
 class InstagramDownloader {
   final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
-  final String postApi = '';
   final URLValidator urlValidator = URLValidator();
   final FileDownloader fileDownloader = FileDownloader();
 
-  void getPost(String url) async {
+  void downloadPost(String url) async {
     if (!urlValidator.isValid(url)) {
       return;
     }
-
-    var data = await _fetchData(urlValidator.removeParams(url));
+    var data = await _fetchPostData(urlValidator.removeParams(url));
     _dispatch(data);
   }
 
-  Future<dynamic> _fetchData(String url) async {
+  Future<dynamic> _fetchPostData(String url) async {
     http.Response response = await http.get(Uri.parse(url + '?__a=1'));
 
     if (response.statusCode == 200) {

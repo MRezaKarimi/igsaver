@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
 
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
-      instagramDownloader.getPost(data);
+      instagramDownloader.downloadPost(data);
     }
   }
 
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                           size: 35,
                         ),
                         onPressed: () {
-                          instagramDownloader.getPost(url ?? '');
+                          instagramDownloader.downloadPost(url ?? '');
                         },
                       ),
                     ],
