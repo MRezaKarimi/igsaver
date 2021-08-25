@@ -15,3 +15,7 @@ class UnknownPostTypeException implements Exception {
   @override
   String toString() => message;
 }
+
+class PrivateAccountException implements Exception {}
+
+class AccountHaveNoPostException implements Exception {}
