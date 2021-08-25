@@ -10,8 +10,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool clipboardSwitch = false;
-  bool backgroundSwitch = false;
+  bool clipboardSwitch = true;
+  bool vibrateSwitch = true;
+  bool onlyImageSwitch = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,16 @@ class _SettingsState extends State<Settings> {
               switchCallback: (bool value) {},
             ),
             SettingsCard(
-              title: 'Run In Background',
+              title: 'Vibrate On Download',
+              description: 'Vibrate when a post downloaded successfully.',
+              switchValue: vibrateSwitch,
+              switchCallback: (bool value) {},
+            ),
+            SettingsCard(
+              title: 'Only Download Images',
               description:
-                  'Allow this app to run a service in background to watch clipboard and download posts.',
-              switchValue: clipboardSwitch,
+                  'Skip downloading videos when new url copied to the clipboard. Turning this off results in more data usage.',
+              switchValue: onlyImageSwitch,
               switchCallback: (bool value) {},
             ),
           ],
