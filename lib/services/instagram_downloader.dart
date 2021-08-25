@@ -5,9 +5,6 @@ import 'package:igsaver/services/url_validator.dart';
 import 'package:igsaver/exceptions/exceptions.dart';
 
 class InstagramDownloader {
-  final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
-  final String profileAPI =
-      'https://www.instagram.com/graphql/query/?query_hash=';
   final URLValidator urlValidator = URLValidator();
   final FileDownloader fileDownloader = FileDownloader();
 
@@ -17,42 +14,6 @@ class InstagramDownloader {
     }
     var data = await _fetchPostData(urlValidator.removeParams(url));
     _dispatch(data);
-  }
-
-  Future<Map> getUserInfo(String username) async {
-    http.Response response =
-        await http.get(Uri.parse('https://www.instagram.com/$username/?__a=1'));
-
-    if (response.statusCode == 404) {
-      throw UserNotFoundException();
-    }
-
-    var userInfo = jsonDecode(response.body)['graphql']['user'];
-
-    if (userInfo['is_private']) {
-      throw PrivateAccountException();
-    }
-
-    if (userInfo['edge_owner_to_timeline_media']['count'] == 0) {
-      throw AccountHaveNoPostException();
-    }
-
-    return {
-      'id': userInfo['id'],
-      'profilePicUrl': userInfo['profile_pic_url'],
-      'username': userInfo['username'],
-      'name': userInfo['full_name'],
-      'postCount': userInfo['edge_owner_to_timeline_media']['count'],
-    };
-  }
-
-  Future<void> _fetchProfileData(int userId, {int numOfPosts: 12}) async {
-    http.Response response = await http.get(Uri.parse(profileAPI +
-        queryHash +
-        '&variables={"id":"$userId","first":$numOfPosts}'));
-
-    return jsonDecode(response.body)['data']['user']
-        ['edge_owner_to_timeline_media']['edges'];
   }
 
   Future<dynamic> _fetchPostData(String url) async {
@@ -115,5 +76,79 @@ class InstagramDownloader {
     }
 
     fileDownloader.download(videoURL, videoFilename, isVideo: true);
+  }
+}
+
+class InstagramProfileDownloader extends InstagramDownloader {
+  final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
+  final String profileAPI =
+      'https://www.instagram.com/graphql/query/?query_hash=';
+
+  Future<Map> getUserInfo(String username) async {
+    http.Response response =
+        await http.get(Uri.parse('https://www.instagram.com/$username/?__a=1'));
+
+    if (response.statusCode == 404) {
+      throw UserNotFoundException();
+    }
+
+    var userInfo = jsonDecode(response.body)['graphql']['user'];
+
+    if (userInfo['is_private']) {
+      throw PrivateAccountException();
+    }
+
+    if (userInfo['edge_owner_to_timeline_media']['count'] == 0) {
+      throw AccountHaveNoPostException();
+    }
+
+    return {
+      'id': userInfo['id'],
+      'profilePicUrl': userInfo['profile_pic_url'],
+      'username': userInfo['username'],
+      'name': userInfo['full_name'],
+      'postCount': userInfo['edge_owner_to_timeline_media']['count'],
+    };
+  }
+
+  void downloadProfile(int userID, int numberOfPosts, bool imagesOnly) async {
+    if (0 < numberOfPosts && numberOfPosts <= 50) {
+      _downloadPartialProfile(userID, numberOfPosts, imagesOnly);
+    } else {
+      _downloadFullProfile(userID, imagesOnly);
+    }
+  }
+
+  Future<void> _downloadPartialProfile(
+      int userID, int numberOfPosts, bool imagesOnly) async {
+    http.Response response = await http.get(Uri.parse(profileAPI +
+        queryHash +
+        '&variables={"id":"$userID","first":$numberOfPosts}'));
+
+    return jsonDecode(response.body)['data']['user']
+        ['edge_owner_to_timeline_media']['edges'];
+  }
+
+  Future<void> _downloadFullProfile(int userID, bool imagesOnly) async {
+    bool hasNext = true;
+    String endCursor = '';
+
+    while (hasNext) {
+      http.Response response = await http.get(Uri.parse(profileAPI +
+          queryHash +
+          '&variables={"id":"$userID","first":50,"after":"$endCursor"}'));
+
+      var data = jsonDecode(response.body);
+
+      for (var post in data['data']['user']['edge_owner_to_timeline_media']
+          ['edges']) {
+        _dispatch(post['node']);
+      }
+
+      hasNext = data['data']['user']['edge_owner_to_timeline_media']
+          ['page_info']['has_next_page'];
+      endCursor = data['data']['user']['edge_owner_to_timeline_media']
+          ['page_info']['end_cursor'];
+    }
   }
 }
