@@ -24,7 +24,7 @@ class InstagramDownloader {
         await http.get(Uri.parse('https://www.instagram.com/$username/?__a=1'));
 
     if (response.statusCode == 404) {
-      throw NotFoundException('User not found');
+      throw UserNotFoundException();
     }
 
     var userInfo = jsonDecode(response.body)['graphql']['user'];
@@ -58,12 +58,11 @@ class InstagramDownloader {
   Future<dynamic> _fetchPostData(String url) async {
     http.Response response = await http.get(Uri.parse(url + '?__a=1'));
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)['graphql']['shortcode_media'];
-    } else if (response.statusCode == 404) {
-      throw NotFoundException(
-          'Post not found. The post may be removed or URL is broken');
+    if (response.statusCode == 404) {
+      // 'Post not found. The post may be removed or the URL is broken'
+      throw PostNotFoundException();
     }
+    return jsonDecode(response.body)['graphql']['shortcode_media'];
   }
 
   void _dispatch(dynamic data) {
@@ -78,8 +77,8 @@ class InstagramDownloader {
         _downloadImage(data);
         break;
       default:
-        throw UnknownPostTypeException(
-            'Unknown post type. Post should be image, video, album, reel or IGTv.');
+        // 'Unknown post type. Post should be image, video, album, reel or IGTv.'
+        throw UnknownPostTypeException();
     }
   }
 

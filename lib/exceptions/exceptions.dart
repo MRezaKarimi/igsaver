@@ -1,20 +1,8 @@
-class NotFoundException implements Exception {
-  final String message;
+class UserNotFoundException implements Exception {}
 
-  NotFoundException(this.message);
+class PostNotFoundException implements Exception {}
 
-  @override
-  String toString() => message;
-}
-
-class UnknownPostTypeException implements Exception {
-  final String message;
-
-  UnknownPostTypeException(this.message);
-
-  @override
-  String toString() => message;
-}
+class UnknownPostTypeException implements Exception {}
 
 class PrivateAccountException implements Exception {}
 
