@@ -65,7 +65,6 @@ class _HomeState extends State<Home> {
                       return;
                     }
 
-                    HapticFeedback.lightImpact();
                     try {
                       Map userInfo =
                           await instagramDownloader.getUserInfo(username);
