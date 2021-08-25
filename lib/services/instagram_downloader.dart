@@ -19,20 +19,31 @@ class InstagramDownloader {
     _dispatch(data);
   }
 
-  void downloadProfile(String username) async {
-    int userId = await _getUserId(username);
-    await _fetchProfileData(userId);
-  }
-
-  Future<dynamic> _getUserId(String username) async {
+  Future<Map> getUserInfo(String username) async {
     http.Response response =
         await http.get(Uri.parse('https://www.instagram.com/$username/?__a=1'));
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)['graphql']['user']['id'];
-    } else if (response.statusCode == 404) {
+    if (response.statusCode == 404) {
       throw NotFoundException('User not found');
     }
+
+    var userInfo = jsonDecode(response.body)['graphql']['user'];
+
+    if (userInfo['is_private']) {
+      throw PrivateAccountException();
+    }
+
+    if (userInfo['edge_owner_to_timeline_media']['count'] == 0) {
+      throw AccountHaveNoPostException();
+    }
+
+    return {
+      'id': userInfo['id'],
+      'profilePicUrl': userInfo['profile_pic_url'],
+      'username': userInfo['username'],
+      'name': userInfo['full_name'],
+      'postCount': userInfo['edge_owner_to_timeline_media']['count'],
+    };
   }
 
   Future<void> _fetchProfileData(int userId, {int numOfPosts: 12}) async {
