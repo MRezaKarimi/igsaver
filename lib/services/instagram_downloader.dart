@@ -125,8 +125,12 @@ class InstagramProfileDownloader extends InstagramDownloader {
         queryHash +
         '&variables={"id":"$userID","first":$numberOfPosts}'));
 
-    return jsonDecode(response.body)['data']['user']
-        ['edge_owner_to_timeline_media']['edges'];
+    var data = jsonDecode(response.body)['data']['user']
+        ['edge_owner_to_timeline_media'];
+
+    for (var post in data['edges']) {
+      _dispatch(post['node']);
+    }
   }
 
   Future<void> _downloadFullProfile(int userID, bool imagesOnly) async {
@@ -138,17 +142,15 @@ class InstagramProfileDownloader extends InstagramDownloader {
           queryHash +
           '&variables={"id":"$userID","first":50,"after":"$endCursor"}'));
 
-      var data = jsonDecode(response.body);
+      var data = jsonDecode(response.body)['data']['user']
+          ['edge_owner_to_timeline_media'];
 
-      for (var post in data['data']['user']['edge_owner_to_timeline_media']
-          ['edges']) {
+      for (var post in data['edges']) {
         _dispatch(post['node']);
       }
 
-      hasNext = data['data']['user']['edge_owner_to_timeline_media']
-          ['page_info']['has_next_page'];
-      endCursor = data['data']['user']['edge_owner_to_timeline_media']
-          ['page_info']['end_cursor'];
+      hasNext = data['page_info']['has_next_page'];
+      endCursor = data['page_info']['end_cursor'];
     }
   }
 }
