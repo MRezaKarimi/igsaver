@@ -4,6 +4,8 @@ import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:igsaver/widgets/rounded_textfield.dart';
+import 'package:igsaver/widgets/rounded_button.dart';
 
 class Home extends StatefulWidget {
   static const route = '/';
@@ -27,6 +29,40 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     watchClipboard();
+  }
+
+  Future<void> _showDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          title: Text('Download Profile Posts'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                RoundedTextField(
+                  hint: 'username',
+                  keyboardType: TextInputType.text,
+                  onChanged: (value) {
+                    url = value;
+                  },
+                ),
+                SizedBox(height: 20),
+                RoundedButton(
+                  text: 'Search',
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
