@@ -1,3 +1,7 @@
+import 'package:flutter/services.dart' hide Clipboard;
+import 'package:flutter/widgets.dart';
+import 'package:igsaver/exceptions/exceptions.dart';
+import 'package:igsaver/pages/profile_download.dart';
 import 'package:igsaver/services/clipboard.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/constants.dart';
@@ -18,6 +22,7 @@ class _HomeState extends State<Home> {
   InstagramDownloader instagramDownloader = InstagramDownloader();
   Clipboard clipboard = Clipboard();
   String? url;
+  String username = '';
 
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
@@ -49,13 +54,34 @@ class _HomeState extends State<Home> {
                   hint: 'username',
                   keyboardType: TextInputType.text,
                   onChanged: (value) {
-                    url = value;
+                    username = value;
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 RoundedButton(
                   text: 'Search',
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (username != '') {
+                      return;
+                    }
+
+                    HapticFeedback.lightImpact();
+                    try {
+                      Map userInfo =
+                          await instagramDownloader.getUserInfo(username);
+
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        ProfileDownload.route,
+                        ModalRoute.withName(Home.route),
+                        arguments: {'userInfo': userInfo},
+                      );
+                    } on PrivateAccountException catch (e) {
+                      print('private account');
+                    } on AccountHaveNoPostException catch (e) {
+                      print('no post account');
+                    }
+                  },
                 ),
               ],
             ),
