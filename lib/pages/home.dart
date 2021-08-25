@@ -19,14 +19,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  InstagramDownloader instagramDownloader = InstagramDownloader();
+  InstagramDownloader igDownloader = InstagramDownloader();
+  InstagramProfileDownloader igProfileDownloader = InstagramProfileDownloader();
   Clipboard clipboard = Clipboard();
   String? url;
   String username = '';
 
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
-      instagramDownloader.downloadPost(data);
+      igDownloader.downloadPost(data);
     }
   }
 
@@ -67,7 +68,7 @@ class _HomeState extends State<Home> {
 
                     try {
                       Map userInfo =
-                          await instagramDownloader.getUserInfo(username);
+                          await igProfileDownloader.getUserInfo(username);
 
                       Navigator.pushNamedAndRemoveUntil(
                         context,
@@ -145,7 +146,7 @@ class _HomeState extends State<Home> {
                           size: 35,
                         ),
                         onPressed: () {
-                          instagramDownloader.downloadPost(url ?? '');
+                          igDownloader.downloadPost(url ?? '');
                         },
                       ),
                     ],
