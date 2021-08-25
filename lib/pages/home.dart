@@ -100,22 +100,11 @@ class _HomeState extends State<Home> {
                           size: 30,
                         ),
                       ),
-                      OutlinedButton(
-                        child: Text(
-                          'Profile Download',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: kPrimaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          side: BorderSide(color: kPrimaryColor),
-                        ),
-                        onPressed: () {},
+                      RoundedButton(
+                        text: 'Download Profile',
+                        onPressed: () {
+                          _showDialog();
+                        },
                       ),
                       IconButton(
                         onPressed: () {
