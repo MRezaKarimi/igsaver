@@ -69,23 +69,8 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide:
-                                  BorderSide(color: kPrimaryColor, width: 1.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide:
-                                  BorderSide(color: kPrimaryColor, width: 2.0),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            hintText: 'Paste Link Here',
-                            isDense: true,
-                          ),
+                        child: RoundedTextField(
+                          hint: 'Paste Link Here',
                           keyboardType: TextInputType.url,
                           onChanged: (value) {
                             url = value;
