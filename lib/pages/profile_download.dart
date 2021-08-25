@@ -15,7 +15,7 @@ class ProfileDownload extends StatefulWidget {
 }
 
 class _ProfileDownloadState extends State<ProfileDownload> {
-  bool onlyImagesSwitch = true;
+  bool ImagesOnlySwitch = true;
   bool downloadAllSwitch = true;
   int numberOfPosts = 0;
 
@@ -96,12 +96,12 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                         style: TextStyle(fontSize: 17),
                       ),
                       Switch(
-                        value: onlyImagesSwitch,
+                        value: ImagesOnlySwitch,
                         activeColor: kPrimaryColor,
                         activeTrackColor: kPrimaryShadowColor,
                         onChanged: (value) {
                           setState(() {
-                            onlyImagesSwitch = value;
+                            ImagesOnlySwitch = value;
                           });
                         },
                       ),
