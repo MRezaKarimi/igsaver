@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
                 RoundedButton(
                   text: 'Search',
                   onPressed: () async {
-                    if (username != '') {
+                    if (username == '') {
                       return;
                     }
 
