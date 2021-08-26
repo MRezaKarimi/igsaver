@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
+import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
 import 'package:igsaver/widgets/settings_card.dart';
@@ -15,7 +16,8 @@ class ProfileDownload extends StatefulWidget {
 }
 
 class _ProfileDownloadState extends State<ProfileDownload> {
-  bool ImagesOnlySwitch = true;
+  InstagramProfileDownloader igProfileDownloader = InstagramProfileDownloader();
+  bool imagesOnlySwitch = true;
   bool downloadAllSwitch = true;
   int numberOfPosts = 0;
 
@@ -96,12 +98,12 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                         style: TextStyle(fontSize: 17),
                       ),
                       Switch(
-                        value: ImagesOnlySwitch,
+                        value: imagesOnlySwitch,
                         activeColor: kPrimaryColor,
                         activeTrackColor: kPrimaryShadowColor,
                         onChanged: (value) {
                           setState(() {
-                            ImagesOnlySwitch = value;
+                            imagesOnlySwitch = value;
                           });
                         },
                       ),
@@ -154,9 +156,11 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                           child: Slider(
                             value: numberOfPosts.toDouble(),
                             min: 0,
-                            max: 50,
-                            divisions: 10,
-                            // label: numberOfPosts.toString(),
+                            max: userInfo['postCount'] <= 50
+                                ? userInfo['postCount'] +
+                                    .0 //Cast int to double
+                                : 50,
+                            // divisions: userInfo['count'] <= 50 ? userInfo['count']/,
                             onChanged: (double value) {
                               setState(() {
                                 numberOfPosts = value.toInt();
@@ -172,7 +176,20 @@ class _ProfileDownloadState extends State<ProfileDownload> {
             ),
             Expanded(
               flex: 1,
-              child: RoundedButton(text: 'Start Download', onPressed: () {}),
+              child: RoundedButton(
+                text: 'Start Download',
+                onPressed: () {
+                  if (downloadAllSwitch) {
+                    igProfileDownloader.downloadProfile(
+                        int.parse(userInfo['id']), numberOfPosts, true,
+                        downloadAll: true);
+                  } else {
+                    igProfileDownloader.downloadProfile(
+                        int.parse(userInfo['id']), numberOfPosts, true,
+                        downloadAll: false);
+                  }
+                },
+              ),
             ),
           ],
         ),
