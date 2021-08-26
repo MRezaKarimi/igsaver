@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart' hide Clipboard;
 import 'package:flutter/widgets.dart';
 import 'package:igsaver/exceptions/exceptions.dart';
+import 'package:igsaver/pages/history.dart';
 import 'package:igsaver/pages/profile_download.dart';
 import 'package:igsaver/services/clipboard.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
@@ -8,6 +9,7 @@ import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
 
@@ -37,55 +39,57 @@ class _HomeState extends State<Home> {
     watchClipboard();
   }
 
-  Future<void> _showDialog() async {
+  Future<void> _showErrorDialog(String message) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
+        return RoundedDialog(
+          title: Text(message),
+          children: <Widget>[],
+        );
+      },
+    );
+  }
+
+  Future<void> _showUsernameInputDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedDialog(
           title: Text('Download Profile Posts'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                RoundedTextField(
-                  hint: 'username',
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    username = value;
-                  },
-                ),
-                SizedBox(height: 15),
-                RoundedButton(
-                  text: 'Search',
-                  onPressed: () async {
-                    if (username == '') {
-                      return;
-                    }
-
-                    try {
-                      Map userInfo =
-                          await igProfileDownloader.getUserInfo(username);
-
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        ProfileDownload.route,
-                        ModalRoute.withName(Home.route),
-                        arguments: {'userInfo': userInfo},
-                      );
-                    } on PrivateAccountException catch (e) {
-                      print('private account');
-                    } on AccountHaveNoPostException catch (e) {
-                      print('no post account');
-                    }
-                  },
-                ),
-              ],
+          children: <Widget>[
+            RoundedTextField(
+              hint: 'username without @',
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                username = value;
+              },
             ),
-          ),
+            SizedBox(height: 15),
+            RoundedButton(
+              text: 'Search',
+              onPressed: () async {
+                if (username == '') {
+                  return;
+                }
+                try {
+                  Map userInfo =
+                      await igProfileDownloader.getUserInfo(username);
+
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    ProfileDownload.route,
+                    ModalRoute.withName(Home.route),
+                    arguments: {'userInfo': userInfo},
+                  );
+                } on PrivateAccountException catch (e) {
+                  _showErrorDialog('Oops! Account is private');
+                } on AccountHaveNoPostException catch (e) {
+                  _showErrorDialog('Account has no post!');
+                }
+              },
+            ),
+          ],
         );
       },
     );
@@ -155,7 +159,9 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, History.route);
+                        },
                         icon: Icon(
                           CupertinoIcons.clock,
                           color: kPrimaryColor,
@@ -165,7 +171,7 @@ class _HomeState extends State<Home> {
                       RoundedButton(
                         text: 'Download Profile',
                         onPressed: () {
-                          _showDialog();
+                          _showUsernameInputDialog();
                         },
                       ),
                       IconButton(
