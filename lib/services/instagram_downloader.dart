@@ -59,20 +59,29 @@ class InstagramDownloader {
 
   void _downloadImage(dynamic data) {
     String imageURL = data['display_url'];
-    String imageFilename =
-        "${data['owner']['username']} ${data['shortcode']}.jpg";
+    String imageFilename = "${data['owner']['username']}:";
+
+    if (data['shortcode'] == null) {
+      imageFilename = "$imageFilename ${data['id']}.jpg";
+    } else {
+      imageFilename = "$imageFilename ${data['shortcode']}.jpg";
+    }
 
     fileDownloader.download(imageURL, imageFilename);
   }
 
   void _downloadVideo(dynamic data) {
     String videoURL = data['video_url'];
-    String videoFilename;
+    String videoFilename = "${data['owner']['username']}:";
 
-    if (data['title'] != null) {
-      videoFilename = "${data['title']} ${data['shortcode']}.mp4";
+    if (data['title'] == null) {
+      if (data['shortcode'] == null) {
+        videoFilename = "$videoFilename ${data['id']}.mp4";
+      } else {
+        videoFilename = "$videoFilename ${data['shortcode']}.mp4";
+      }
     } else {
-      videoFilename = "${data['owner']['username']} ${data['shortcode']}.mp4";
+      videoFilename = "$videoFilename ${data['title']}.mp4";
     }
 
     fileDownloader.download(videoURL, videoFilename, isVideo: true);
@@ -111,14 +120,16 @@ class InstagramProfileDownloader extends InstagramDownloader {
     };
   }
 
-  void downloadProfile(int userID, int numberOfPosts, bool imagesOnly) async {
-    if (0 < numberOfPosts && numberOfPosts <= 50) {
-      _downloadPartialProfile(userID, numberOfPosts, imagesOnly);
-    } else {
+  void downloadProfile(int userID, int numberOfPosts, bool imagesOnly,
+      {bool downloadAll: true}) async {
+    if (downloadAll) {
       _downloadFullProfile(userID, imagesOnly);
+    } else {
+      _downloadPartialProfile(userID, numberOfPosts, imagesOnly);
     }
   }
 
+  // Download first n post of a user's profile
   Future<void> _downloadPartialProfile(
       int userID, int numberOfPosts, bool imagesOnly) async {
     http.Response response = await http.get(Uri.parse(profileAPI +
@@ -133,6 +144,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
     }
   }
 
+  // Download all posts of a user's profile
   Future<void> _downloadFullProfile(int userID, bool imagesOnly) async {
     bool hasNext = true;
     String endCursor = '';
