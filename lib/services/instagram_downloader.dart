@@ -40,7 +40,7 @@ class InstagramDownloader {
 
   void _downloadImage(dynamic data) {
     String imageURL = data['display_url'];
-    String imageFilename = "${data['owner']['username']}:";
+    String imageFilename = "${data['owner']['username']}";
 
     if (data['shortcode'] == null) {
       imageFilename = "$imageFilename ${data['id']}.jpg";
@@ -53,7 +53,7 @@ class InstagramDownloader {
 
   void _downloadVideo(dynamic data) {
     String videoURL = data['video_url'];
-    String videoFilename = "${data['owner']['username']}:";
+    String videoFilename = "${data['owner']['username']}";
 
     if (data['title'] == null) {
       if (data['shortcode'] == null) {
