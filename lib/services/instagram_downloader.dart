@@ -5,26 +5,7 @@ import 'package:igsaver/services/url_validator.dart';
 import 'package:igsaver/exceptions/exceptions.dart';
 
 class InstagramDownloader {
-  final URLValidator urlValidator = URLValidator();
   final FileDownloader fileDownloader = FileDownloader();
-
-  void downloadPost(String url) async {
-    if (!urlValidator.isValid(url)) {
-      return;
-    }
-    var data = await _fetchPostData(urlValidator.removeParams(url));
-    _dispatch(data);
-  }
-
-  Future<dynamic> _fetchPostData(String url) async {
-    http.Response response = await http.get(Uri.parse(url + '?__a=1'));
-
-    if (response.statusCode == 404) {
-      // 'Post not found. The post may be removed or the URL is broken'
-      throw PostNotFoundException();
-    }
-    return jsonDecode(response.body)['graphql']['shortcode_media'];
-  }
 
   void _dispatch(dynamic data) {
     switch (data['__typename']) {
@@ -85,6 +66,28 @@ class InstagramDownloader {
     }
 
     fileDownloader.download(videoURL, videoFilename, isVideo: true);
+  }
+}
+
+class InstagramPostDownloader extends InstagramDownloader {
+  final URLValidator urlValidator = URLValidator();
+
+  void downloadPost(String url) async {
+    if (!urlValidator.isValid(url)) {
+      return;
+    }
+    var data = await _fetchPostData(urlValidator.removeParams(url));
+    _dispatch(data);
+  }
+
+  Future<dynamic> _fetchPostData(String url) async {
+    http.Response response = await http.get(Uri.parse(url + '?__a=1'));
+
+    if (response.statusCode == 404) {
+      // 'Post not found. The post may be removed or the URL is broken'
+      throw PostNotFoundException();
+    }
+    return jsonDecode(response.body)['graphql']['shortcode_media'];
   }
 }
 

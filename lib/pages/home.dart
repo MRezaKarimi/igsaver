@@ -21,7 +21,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  InstagramDownloader igDownloader = InstagramDownloader();
+  InstagramPostDownloader igPostDownloader = InstagramPostDownloader();
   InstagramProfileDownloader igProfileDownloader = InstagramProfileDownloader();
   Clipboard clipboard = Clipboard();
   String? url;
@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
 
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
-      igDownloader.downloadPost(data);
+      igPostDownloader.downloadPost(data);
     }
   }
 
@@ -150,7 +150,7 @@ class _HomeState extends State<Home> {
                           size: 35,
                         ),
                         onPressed: () {
-                          igDownloader.downloadPost(url ?? '');
+                          igPostDownloader.downloadPost(url ?? '');
                         },
                       ),
                     ],
