@@ -17,8 +17,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     bool clipboardSwitch = settings.get(SettingsService.clipboard, true);
     bool vibrateSwitch = settings.get(SettingsService.vibrate, true);
-    bool imagesOnlySwitch =
-        settings.get(SettingsService.imagesOnlySwitch, true);
+    bool imagesOnlySwitch = settings.get(SettingsService.imagesOnly, true);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,7 +61,7 @@ class _SettingsState extends State<Settings> {
                 setState(() {
                   imagesOnlySwitch = value;
                 });
-                settings.set(SettingsService.imagesOnlySwitch, value);
+                settings.set(SettingsService.imagesOnly, value);
               },
             ),
           ],

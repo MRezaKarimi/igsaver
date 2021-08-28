@@ -9,7 +9,7 @@ class SettingsService {
 
   static const clipboard = 'CLIPBOARD';
   static const vibrate = 'VIBRATE';
-  static const imagesOnlySwitch = 'IMAGES_ONLY';
+  static const imagesOnly = 'IMAGES_ONLY';
 
   bool get(String key, bool defaultValue) {
     var settings = Hive.box('settings');
