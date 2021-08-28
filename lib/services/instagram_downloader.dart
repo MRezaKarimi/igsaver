@@ -75,7 +75,7 @@ class InstagramDownloader {
 class InstagramPostDownloader extends InstagramDownloader {
   final URLValidator urlValidator = URLValidator();
 
-  void downloadPost(String url, bool imagesOnly) async {
+  Future<void> downloadPost(String url, bool imagesOnly) async {
     if (!urlValidator.isValid(url)) {
       throw InvalidUrlException();
     }
