@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
 
-class SettingsCard extends StatefulWidget {
-  bool switchValue;
+class SettingsCard extends StatelessWidget {
+  final bool switchValue;
   final String title;
   final String description;
   final void Function(bool value) switchCallback;
@@ -14,11 +14,6 @@ class SettingsCard extends StatefulWidget {
     required this.switchCallback,
   });
 
-  @override
-  _SettingsCardState createState() => _SettingsCardState();
-}
-
-class _SettingsCardState extends State<SettingsCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,27 +31,22 @@ class _SettingsCardState extends State<SettingsCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.title,
+                    title,
                     style: TextStyle(
                       fontSize: 17,
                       // color: kPrimaryColor,
                     ),
                   ),
                   Switch(
-                    value: widget.switchValue,
+                    value: switchValue,
                     activeColor: kPrimaryColor,
                     activeTrackColor: kPrimaryShadowColor,
-                    onChanged: (value) {
-                      setState(() {
-                        widget.switchValue = value;
-                      });
-                      widget.switchCallback(value);
-                    },
+                    onChanged: switchCallback,
                   ),
                 ],
               ),
               Text(
-                widget.description,
+                description,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[500],
