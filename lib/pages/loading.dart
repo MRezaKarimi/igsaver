@@ -4,6 +4,7 @@ import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/home.dart';
 import 'package:igsaver/services/settings_service.dart';
 import 'package:igsaver/widgets/rounded_dialog.dart';
+import 'package:igsaver/widgets/error_dialog.dart';
 
 class Loading extends StatelessWidget {
   static const String route = '/loading';
@@ -18,36 +19,16 @@ class Loading extends StatelessWidget {
     }
   }
 
-  Future<void> _showErrorDialog(
-    BuildContext context,
-    String title,
-    String message,
-  ) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return RoundedDialog(
-          title: Text(title),
-          children: <Widget>[
-            Text(
-              message,
-              style: TextStyle(fontSize: 17),
-            )
-          ],
-        );
-      },
-    );
-  }
-
   void _checkNetworkConnection(BuildContext context) async {
     bool isConnected = await _hasNetwork();
     if (isConnected) {
       Navigator.pushReplacementNamed(context, Home.route);
     } else {
-      _showErrorDialog(
+      ErrorDialog.show(
         context,
-        'No Internet Connection',
-        'Make sure your device is connected to the network and then try again.',
+        title: 'No Internet Connection',
+        message:
+            'Make sure your device is connected to the network and then try again.',
       );
     }
   }
