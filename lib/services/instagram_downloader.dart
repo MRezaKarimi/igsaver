@@ -7,12 +7,15 @@ import 'package:igsaver/exceptions/exceptions.dart';
 class InstagramDownloader {
   final FileDownloader fileDownloader = FileDownloader();
 
-  void _dispatch(dynamic data) {
+  void _dispatch(dynamic data, bool imagesOnly) {
     switch (data['__typename']) {
       case 'GraphSidecar':
-        _downloadAlbum(data);
+        _downloadAlbum(data, imagesOnly);
         break;
       case 'GraphVideo':
+        if (imagesOnly) {
+          break;
+        }
         _downloadVideo(data);
         break;
       case 'GraphImage':
@@ -24,7 +27,7 @@ class InstagramDownloader {
     }
   }
 
-  void _downloadAlbum(dynamic data) {
+  void _downloadAlbum(dynamic data, bool imagesOnly) {
     List albumItems = data['edge_sidecar_to_children']['edges'];
     albumItems.forEach((element) {
       Map item = element['node'];
@@ -34,7 +37,7 @@ class InstagramDownloader {
       item['owner'] = {};
       item['owner']['username'] = data['owner']['username'];
 
-      _dispatch(item);
+      _dispatch(item, imagesOnly);
     });
   }
 
@@ -72,12 +75,12 @@ class InstagramDownloader {
 class InstagramPostDownloader extends InstagramDownloader {
   final URLValidator urlValidator = URLValidator();
 
-  void downloadPost(String url) async {
+  void downloadPost(String url, bool imagesOnly) async {
     if (!urlValidator.isValid(url)) {
-      return;
+      throw InvalidUrlException();
     }
     var data = await _fetchPostData(urlValidator.removeParams(url));
-    _dispatch(data);
+    _dispatch(data, imagesOnly);
   }
 
   Future<dynamic> _fetchPostData(String url) async {
@@ -143,7 +146,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
         ['edge_owner_to_timeline_media'];
 
     for (var post in data['edges']) {
-      _dispatch(post['node']);
+      _dispatch(post['node'], imagesOnly);
     }
   }
 
@@ -161,7 +164,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
           ['edge_owner_to_timeline_media'];
 
       for (var post in data['edges']) {
-        _dispatch(post['node']);
+        _dispatch(post['node'], imagesOnly);
       }
 
       hasNext = data['page_info']['has_next_page'];
