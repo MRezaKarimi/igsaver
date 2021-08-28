@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/home.dart';
+import 'package:igsaver/services/settings_service.dart';
 import 'package:igsaver/widgets/rounded_dialog.dart';
 
 class Loading extends StatelessWidget {
@@ -54,6 +55,7 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _checkNetworkConnection(context);
+    SettingsService.initialize();
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: Center(
