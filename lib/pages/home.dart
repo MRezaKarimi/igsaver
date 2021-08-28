@@ -9,6 +9,7 @@ import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:igsaver/services/settings_service.dart';
 import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
@@ -23,13 +24,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   InstagramPostDownloader igPostDownloader = InstagramPostDownloader();
   InstagramProfileDownloader igProfileDownloader = InstagramProfileDownloader();
+  SettingsService settings = SettingsService();
   Clipboard clipboard = Clipboard();
+
   String? url;
   String username = '';
 
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
-      igPostDownloader.downloadPost(data);
+      igPostDownloader.downloadPost(
+        data,
+        settings.get(SettingsService.imagesOnly, true),
+      );
     }
   }
 
@@ -150,7 +156,11 @@ class _HomeState extends State<Home> {
                           size: 35,
                         ),
                         onPressed: () {
-                          igPostDownloader.downloadPost(url ?? '');
+                          try {
+                            igPostDownloader.downloadPost(url ?? '', false);
+                          } on InvalidUrlException catch (_) {
+                            _showErrorDialog('Invalid URL');
+                          }
                         },
                       ),
                     ],
