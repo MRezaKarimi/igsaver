@@ -1,18 +1,23 @@
 import 'package:flutter/services.dart' hide Clipboard;
-import 'package:flutter/widgets.dart';
-import 'package:igsaver/exceptions/exceptions.dart';
-import 'package:igsaver/pages/history.dart';
-import 'package:igsaver/pages/profile_download.dart';
-import 'package:igsaver/services/clipboard.dart';
-import 'package:igsaver/services/instagram_downloader.dart';
-import 'package:igsaver/constants.dart';
-import 'package:igsaver/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'package:igsaver/constants.dart';
+import 'package:igsaver/exceptions/exceptions.dart';
+
+import 'package:igsaver/pages/history.dart';
+import 'package:igsaver/pages/profile_download.dart';
+import 'package:igsaver/pages/settings.dart';
+
+import 'package:igsaver/services/clipboard.dart';
+import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/services/settings_service.dart';
+
+import 'package:igsaver/widgets/rounded_bottom_appbar.dart';
 import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
+import 'package:igsaver/widgets/error_dialog.dart';
 
 class Home extends StatefulWidget {
   static const route = '/';
@@ -43,18 +48,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     watchClipboard();
-  }
-
-  Future<void> _showErrorDialog(String message) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return RoundedDialog(
-          title: Text(message),
-          children: <Widget>[],
-        );
-      },
-    );
   }
 
   Future<void> _showUsernameInputDialog() async {
@@ -88,10 +81,18 @@ class _HomeState extends State<Home> {
                     ModalRoute.withName(Home.route),
                     arguments: {'userInfo': userInfo},
                   );
-                } on PrivateAccountException catch (e) {
-                  _showErrorDialog('Oops! Account is private');
-                } on AccountHaveNoPostException catch (e) {
-                  _showErrorDialog('Account has no post!');
+                } on PrivateAccountException {
+                  ErrorDialog.show(
+                    context,
+                    title: 'Oops! Account is private',
+                    message: '',
+                  );
+                } on AccountHaveNoPostException {
+                  ErrorDialog.show(
+                    context,
+                    title: 'Account has no post!',
+                    message: '',
+                  );
                 }
               },
             ),
@@ -155,25 +156,31 @@ class _HomeState extends State<Home> {
                           color: kPrimaryColor,
                           size: 35,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           try {
-                            igPostDownloader.downloadPost(url ?? '', false);
-                          } on InvalidUrlException catch (_) {
-                            _showErrorDialog('Invalid URL');
+                            await igPostDownloader.downloadPost(
+                                url ?? '', false);
+                          } on InvalidUrlException {
+                            ErrorDialog.show(
+                              context,
+                              title: 'Invalid URL!',
+                              message:
+                                  'The given URL is not a valid instagram URL.',
+                            );
                           }
                         },
                       ),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                         onPressed: () {
                           Navigator.pushNamed(context, History.route);
                         },
                         icon: Icon(
-                          CupertinoIcons.clock,
+                          CupertinoIcons.arrow_down_circle,
                           color: kPrimaryColor,
                           size: 30,
                         ),
