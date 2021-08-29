@@ -37,10 +37,15 @@ class _HomeState extends State<Home> {
 
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
-      igPostDownloader.downloadPost(
-        data,
-        settings.get(SettingsService.imagesOnly, true),
-      );
+      try {
+        igPostDownloader.downloadPost(
+          data,
+          settings.get(SettingsService.imagesOnly, true),
+        );
+        // Ignore invalid URL exception
+      } on InvalidUrlException {
+        continue;
+      }
     }
   }
 
