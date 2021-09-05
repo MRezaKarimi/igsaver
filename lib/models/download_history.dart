@@ -37,6 +37,8 @@ class DownloadItem extends ChangeNotifier {
 
   int get count => _count;
 
+  double get percentage => _count / total;
+
   set count(int newCount) {
     _count = newCount;
     if (_count == total) {
