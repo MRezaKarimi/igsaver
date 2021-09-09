@@ -185,7 +185,7 @@ class _HomeState extends State<Home> {
                           Navigator.pushNamed(context, History.route);
                         },
                         icon: Icon(
-                          CupertinoIcons.arrow_down_circle,
+                          CupertinoIcons.clock,
                           color: kPrimaryColor,
                           size: 30,
                         ),
