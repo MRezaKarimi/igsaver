@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:igsaver/pages/image_viewer.dart';
 import 'package:provider/provider.dart';
 import 'package:igsaver/pages/history.dart';
 import 'package:igsaver/pages/loading.dart';
@@ -25,6 +26,7 @@ class IGSaver extends StatelessWidget {
           Settings.route: (context) => Settings(),
           History.route: (context) => History(),
           ProfileDownload.route: (context) => ProfileDownload(),
+          ImageViewer.route: (context) => ImageViewer(),
         },
       ),
     );
