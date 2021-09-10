@@ -2,9 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
-import 'package:igsaver/models/download_history.dart';
 import 'package:igsaver/pages/image_viewer.dart';
-import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
   static const route = '/history';
