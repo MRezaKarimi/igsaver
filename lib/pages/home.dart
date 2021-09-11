@@ -98,6 +98,20 @@ class _HomeState extends State<Home> {
                     title: 'Account has no post!',
                     message: '',
                   );
+                } on SocketException {
+                  ErrorDialog.show(
+                    context,
+                    title: 'Connection Error!',
+                    message:
+                        'Check if your device have internet connection and try again.',
+                  );
+                } catch (_) {
+                  ErrorDialog.show(
+                    context,
+                    title: 'Oops! Something went wrong!',
+                    message:
+                        'Try again after a while or report problem to developer.',
+                  );
                 }
               },
             ),
