@@ -7,6 +7,18 @@ import 'package:igsaver/exceptions/exceptions.dart';
 class InstagramDownloader {
   final FileDownloader fileDownloader = FileDownloader();
 
+  Future<http.Response> _get(String uri) async {
+    http.Response response = await http.get(
+      Uri.parse(uri),
+      headers: {
+        'User-Agent':
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0'
+      },
+    );
+
+    return response;
+  }
+
   void _dispatch(dynamic data, bool imagesOnly) {
     switch (data['__typename']) {
       case 'GraphSidecar':
@@ -79,18 +91,18 @@ class InstagramPostDownloader extends InstagramDownloader {
     if (!urlValidator.isValid(url)) {
       throw InvalidUrlException();
     }
-    var data = await _fetchPostData(urlValidator.removeParams(url));
-    _dispatch(data, imagesOnly);
-  }
 
-  Future<dynamic> _fetchPostData(String url) async {
-    http.Response response = await http.get(Uri.parse(url + '?__a=1'));
+    String cleanedUrl = urlValidator.removeParams(url);
+    http.Response response = await _get(cleanedUrl + '?__a=1');
 
     if (response.statusCode == 404) {
       // 'Post not found. The post may be removed or the URL is broken'
       throw PostNotFoundException();
     }
-    return jsonDecode(response.body)['graphql']['shortcode_media'];
+
+    var data = jsonDecode(response.body)['graphql']['shortcode_media'];
+
+    _dispatch(data, imagesOnly);
   }
 }
 
@@ -101,11 +113,20 @@ class InstagramProfileDownloader extends InstagramDownloader {
 
   Future<Map> getUserInfo(String username) async {
     http.Response response =
-        await http.get(Uri.parse('https://www.instagram.com/$username/?__a=1'));
+        await _get('https://www.instagram.com/$username/?__a=1');
 
     if (response.statusCode == 404) {
       throw UserNotFoundException();
     }
+
+    /*return {
+      'id': 787132,
+      'profilePicUrl':
+          'https://scontent-frt3-1.cdninstagram.com/v/t51.2885-19/s150x150/95140556_594026277870211_4156802974091313152_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_ohc=33_ZoeDI2M0AX-sepdO&edm=ABfd0MgBAAAA&ccb=7-4&oh=2355264739031b0adf7b88f632e450f9&oe=6143B0E4&_nc_sid=7bff83',
+      'username': 'natgeo',
+      'name': 'National Geographic',
+      'postCount': 5000,
+    };*/
 
     var userInfo = jsonDecode(response.body)['graphql']['user'];
 
@@ -138,9 +159,9 @@ class InstagramProfileDownloader extends InstagramDownloader {
   // Download first n post of a user's profile
   Future<void> _downloadPartialProfile(
       int userID, int numberOfPosts, bool imagesOnly) async {
-    http.Response response = await http.get(Uri.parse(profileAPI +
+    http.Response response = await _get(profileAPI +
         queryHash +
-        '&variables={"id":"$userID","first":$numberOfPosts}'));
+        '&variables={"id":"$userID","first":$numberOfPosts}');
 
     var data = jsonDecode(response.body)['data']['user']
         ['edge_owner_to_timeline_media'];
@@ -156,9 +177,9 @@ class InstagramProfileDownloader extends InstagramDownloader {
     String endCursor = '';
 
     while (hasNext) {
-      http.Response response = await http.get(Uri.parse(profileAPI +
+      http.Response response = await _get(profileAPI +
           queryHash +
-          '&variables={"id":"$userID","first":50,"after":"$endCursor"}'));
+          '&variables={"id":"$userID","first":50,"after":"$endCursor"}');
 
       var data = jsonDecode(response.body)['data']['user']
           ['edge_owner_to_timeline_media'];
@@ -166,6 +187,31 @@ class InstagramProfileDownloader extends InstagramDownloader {
       for (var post in data['edges']) {
         _dispatch(post['node'], imagesOnly);
       }
+
+      hasNext = data['page_info']['has_next_page'];
+      endCursor = data['page_info']['end_cursor'];
+    }
+  }
+
+  Stream<List> getProfilePosts(int userID) async* {
+    bool hasNext = true;
+    String endCursor = '';
+    List posts = [];
+
+    while (hasNext) {
+      print('********fired********');
+      http.Response response = await _get(profileAPI +
+          queryHash +
+          '&variables={"id":"$userID","first":50,"after":"$endCursor"}');
+
+      var data = jsonDecode(response.body)['data']['user']
+          ['edge_owner_to_timeline_media'];
+
+      for (var post in data['edges']) {
+        posts.add(post['node']);
+      }
+
+      yield posts;
 
       hasNext = data['page_info']['has_next_page'];
       endCursor = data['page_info']['end_cursor'];
