@@ -64,7 +64,7 @@ class _GridItemState extends State<GridItem> {
             child: _getTileIcon(widget.data),
           ),
           Align(
-            alignment: AlignmentDirectional.bottomStart,
+            alignment: AlignmentDirectional(-0.9, 0.9),
             child: selected
                 ? Icon(
                     CupertinoIcons.check_mark_circled_solid,
