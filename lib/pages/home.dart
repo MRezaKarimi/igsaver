@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
   void watchClipboard() async {
     await for (var data in clipboard.getClipboardData()) {
       try {
-        igPostDownloader.downloadPost(
+        await igPostDownloader.downloadPost(
           data,
           settings.get(SettingsService.imagesOnly, true),
         );
