@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:igsaver/pages/image_viewer.dart';
+import 'package:igsaver/pages/post_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:igsaver/pages/history.dart';
 import 'package:igsaver/pages/loading.dart';
@@ -15,20 +16,18 @@ void main() {
 class IGSaver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DownloadHistory>(
-      create: (_) => DownloadHistory(),
-      child: MaterialApp(
-        title: 'IGSaver',
-        initialRoute: Loading.route,
-        routes: {
-          Loading.route: (context) => Loading(),
-          Home.route: (context) => Home(),
-          Settings.route: (context) => Settings(),
-          History.route: (context) => History(),
-          ProfileDownload.route: (context) => ProfileDownload(),
-          ImageViewer.route: (context) => ImageViewer(),
-        },
-      ),
+    return MaterialApp(
+      title: 'IGSaver',
+      initialRoute: Loading.route,
+      routes: {
+        Loading.route: (context) => Loading(),
+        Home.route: (context) => Home(),
+        Settings.route: (context) => Settings(),
+        History.route: (context) => History(),
+        ProfileDownload.route: (context) => ProfileDownload(),
+        ImageViewer.route: (context) => ImageViewer(),
+        SelectPost.route: (context) => SelectPost(),
+      },
     );
   }
 }
