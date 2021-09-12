@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart' hide Clipboard;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +15,6 @@ import 'package:igsaver/services/clipboard.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/services/settings_service.dart';
 
-import 'package:igsaver/widgets/rounded_bottom_appbar.dart';
 import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
@@ -70,7 +71,7 @@ class _HomeState extends State<Home> {
               },
             ),
             SizedBox(height: 15),
-            RoundedButton(
+            FilledRoundedButton(
               text: 'Search',
               onPressed: () async {
                 if (username == '') {
@@ -204,7 +205,7 @@ class _HomeState extends State<Home> {
                           size: 30,
                         ),
                       ),
-                      RoundedButton(
+                      FilledRoundedButton(
                         text: 'Download Profile',
                         onPressed: () {
                           _showUsernameInputDialog();
