@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
+import 'package:igsaver/pages/select_post.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
-import 'package:igsaver/widgets/rounded_textfield.dart';
-import 'package:igsaver/widgets/settings_card.dart';
 
 class ProfileDownload extends StatefulWidget {
   static const route = '/profile_download';
-  // final Map userInfo;
-
-  // ProfileDownload(this.userInfo);
 
   @override
   _ProfileDownloadState createState() => _ProfileDownloadState();
@@ -176,19 +172,36 @@ class _ProfileDownloadState extends State<ProfileDownload> {
             ),
             Expanded(
               flex: 1,
-              child: RoundedButton(
-                text: 'Start Download',
-                onPressed: () {
-                  if (downloadAllSwitch) {
-                    igProfileDownloader.downloadProfile(
-                        int.parse(userInfo['id']), numberOfPosts, true,
-                        downloadAll: true);
-                  } else {
-                    igProfileDownloader.downloadProfile(
-                        int.parse(userInfo['id']), numberOfPosts, true,
-                        downloadAll: false);
-                  }
-                },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  RoundedButton(
+                    text: 'Select Posts',
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        SelectPost.route,
+                        arguments: {
+                          'userID': userInfo['id'],
+                        },
+                      );
+                    },
+                  ),
+                  FilledRoundedButton(
+                    text: 'Download All',
+                    onPressed: () {
+                      if (downloadAllSwitch) {
+                        igProfileDownloader.downloadProfile(
+                            int.parse(userInfo['id']), numberOfPosts, true,
+                            downloadAll: true);
+                      } else {
+                        igProfileDownloader.downloadProfile(
+                            int.parse(userInfo['id']), numberOfPosts, true,
+                            downloadAll: false);
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ],
