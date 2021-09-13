@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/select_post.dart';
@@ -14,16 +15,25 @@ class ProfileDownload extends StatefulWidget {
 class _ProfileDownloadState extends State<ProfileDownload> {
   InstagramProfileDownloader igProfileDownloader = InstagramProfileDownloader();
   bool imagesOnlySwitch = true;
-  bool downloadAllSwitch = true;
-  int numberOfPosts = 0;
+
+  String _getRoundedFollowers(int num) {
+    if (num > 1000000) {
+      return (num / 1000000).toStringAsFixed(1) + 'm';
+    }
+    if (num > 1000) {
+      return (num / 1000).toStringAsFixed(1) + 'k';
+    } else {
+      return num.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     Map userInfo = args['userInfo'];
+    String followers = _getRoundedFollowers(userInfo['followers']);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
@@ -35,174 +45,79 @@ class _ProfileDownloadState extends State<ProfileDownload> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex: 3,
+              // flex: 3,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  CircleAvatar(
+                    radius: 100,
+                    backgroundImage: NetworkImage(userInfo['profilePicUrl']),
+                  ),
+                  Text(
+                    userInfo['name'],
+                    style: TextStyle(fontSize: 20),
+                  ),
                   Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            NetworkImage(userInfo['profilePicUrl']),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '@${userInfo['username']}',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 15,
+                        ),
                       ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            userInfo['name'],
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Text(
-                            '@${userInfo['username']}',
-                            style: TextStyle(
-                              color: Colors.grey[700],
-                              fontSize: 15,
-                            ),
-                          ),
-                          Text(
-                            '${userInfo['postCount']} Posts',
-                            style: TextStyle(
-                              color: Colors.grey[700],
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      )
+                      SizedBox(width: 5),
+                      Icon(
+                        CupertinoIcons.check_mark_circled_solid,
+                        size: 15,
+                        color: userInfo['is_verified']
+                            ? Colors.black
+                            : Colors.transparent,
+                      ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    child: Divider(
-                      // height: 10,
-                      thickness: 1,
+                  Text(
+                    '${userInfo['postCount']} Posts | $followers Followers',
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 15,
                     ),
                   ),
+                  SizedBox(height: 30),
                 ],
               ),
             ),
-            Expanded(
-              flex: 7,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Only Download Images',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      Switch(
-                        value: imagesOnlySwitch,
-                        activeColor: kPrimaryColor,
-                        activeTrackColor: kPrimaryShadowColor,
-                        onChanged: (value) {
-                          setState(() {
-                            imagesOnlySwitch = value;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Download All Posts',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      Switch(
-                        value: downloadAllSwitch,
-                        activeColor: kPrimaryColor,
-                        activeTrackColor: kPrimaryShadowColor,
-                        onChanged: (value) {
-                          setState(() {
-                            downloadAllSwitch = value;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: !downloadAllSwitch,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 15, bottom: 20),
-                          child: Text(
-                            'Download First $numberOfPosts Posts',
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                        ),
-                        SliderTheme(
-                          data: SliderThemeData(
-                            inactiveTickMarkColor: Colors.transparent,
-                            activeTickMarkColor: Colors.transparent,
-                            inactiveTrackColor: kPrimaryShadowColor,
-                            activeTrackColor: kPrimaryColor,
-                            thumbColor: kPrimaryColor,
-                            overlayShape:
-                                RoundSliderOverlayShape(overlayRadius: 0),
-                          ),
-                          child: Slider(
-                            value: numberOfPosts.toDouble(),
-                            min: 0,
-                            max: userInfo['postCount'] <= 50
-                                ? userInfo['postCount'] +
-                                    .0 //Cast int to double
-                                : 50,
-                            // divisions: userInfo['count'] <= 50 ? userInfo['count']/,
-                            onChanged: (double value) {
-                              setState(() {
-                                numberOfPosts = value.toInt();
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  RoundedButton(
-                    text: 'Select Posts',
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        SelectPost.route,
-                        arguments: {
-                          'userID': userInfo['id'],
-                        },
-                      );
-                    },
-                  ),
-                  FilledRoundedButton(
-                    text: 'Download All',
-                    onPressed: () {
-                      if (downloadAllSwitch) {
-                        igProfileDownloader.downloadProfile(
-                            int.parse(userInfo['id']), numberOfPosts, true,
-                            downloadAll: true);
-                      } else {
-                        igProfileDownloader.downloadProfile(
-                            int.parse(userInfo['id']), numberOfPosts, true,
-                            downloadAll: false);
-                      }
-                    },
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                RoundedButton(
+                  text: 'Select Posts',
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      SelectPost.route,
+                      arguments: {
+                        'userID': userInfo['id'],
+                      },
+                    );
+                  },
+                ),
+                FilledRoundedButton(
+                  text: 'Download All',
+                  onPressed: () {
+                    /*if (downloadAllSwitch) {
+                      igProfileDownloader.downloadProfile(
+                          int.parse(userInfo['id']), numberOfPosts, true,
+                          downloadAll: true);
+                    } else {
+                      igProfileDownloader.downloadProfile(
+                          int.parse(userInfo['id']), numberOfPosts, true,
+                          downloadAll: false);
+                    }*/
+                  },
+                ),
+              ],
             ),
           ],
         ),
