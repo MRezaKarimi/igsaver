@@ -87,6 +87,12 @@ class _HomeState extends State<Home> {
                     ModalRoute.withName(Home.route),
                     arguments: {'userInfo': userInfo},
                   );
+                } on UserNotFoundException {
+                  ErrorDialog.show(
+                    context,
+                    title: 'User Not Found!',
+                    message: '',
+                  );
                 } on PrivateAccountException {
                   ErrorDialog.show(
                     context,
