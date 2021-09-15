@@ -16,7 +16,7 @@ class SelectPost extends StatelessWidget {
   Widget _buildPage(BuildContext context, Widget? _) {
     Map args = ModalRoute.of(context)?.settings.arguments as Map;
     int userID = int.parse(args['userID']);
-    InstagramProfileDownloader igDownloader = InstagramProfileDownloader();
+    InstagramProfileDownloader profileDownloader = InstagramProfileDownloader();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +33,7 @@ class SelectPost extends StatelessWidget {
             Expanded(
               // flex: 10,
               child: StreamBuilder<List<dynamic>>(
-                stream: igDownloader.getProfilePosts(userID),
+                stream: profileDownloader.getProfilePosts(userID),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return GridView.builder(
@@ -64,7 +64,10 @@ class SelectPost extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10),
               child: FilledRoundedButton(
                 text: 'Download Selected',
-                onPressed: () {},
+                onPressed: () async {
+                  await profileDownloader.downloadSelectedPosts(
+                      Provider.of<PostsList>(context, listen: false));
+                },
               ),
             )
           ],
