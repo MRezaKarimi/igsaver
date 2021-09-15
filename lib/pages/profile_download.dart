@@ -34,6 +34,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
     String followers = _getRoundedFollowers(userInfo['followers']);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
