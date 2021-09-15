@@ -4,6 +4,7 @@ import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/select_post.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
+import 'package:igsaver/widgets/rounded_dialog.dart';
 
 class ProfileDownload extends StatefulWidget {
   static const route = '/profile_download';
@@ -13,8 +14,7 @@ class ProfileDownload extends StatefulWidget {
 }
 
 class _ProfileDownloadState extends State<ProfileDownload> {
-  InstagramProfileDownloader igProfileDownloader = InstagramProfileDownloader();
-  bool imagesOnlySwitch = true;
+  InstagramProfileDownloader profileDownloader = InstagramProfileDownloader();
 
   String _getRoundedFollowers(int num) {
     if (num > 1000000) {
@@ -27,10 +27,42 @@ class _ProfileDownloadState extends State<ProfileDownload> {
     }
   }
 
+  Future<void> _showDownloadConfirmDialog(int userID) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedDialog(
+          title: Text('Download All Posts'),
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                RoundedButton(
+                  text: 'Download Images',
+                  onPressed: () async {
+                    profileDownloader.downloadAllPosts(userID, true);
+                  },
+                ),
+                FilledRoundedButton(
+                  text: 'Download All Posts',
+                  onPressed: () async {
+                    profileDownloader.downloadAllPosts(userID, false);
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     Map userInfo = args['userInfo'];
+
     String followers = _getRoundedFollowers(userInfo['followers']);
 
     return Scaffold(
@@ -107,15 +139,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                 FilledRoundedButton(
                   text: 'Download All',
                   onPressed: () {
-                    /*if (downloadAllSwitch) {
-                      igProfileDownloader.downloadProfile(
-                          int.parse(userInfo['id']), numberOfPosts, true,
-                          downloadAll: true);
-                    } else {
-                      igProfileDownloader.downloadProfile(
-                          int.parse(userInfo['id']), numberOfPosts, true,
-                          downloadAll: false);
-                    }*/
+                    _showDownloadConfirmDialog(int.parse(userInfo['id']));
                   },
                 ),
               ],
