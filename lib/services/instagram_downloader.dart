@@ -143,7 +143,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
       'name': userInfo['full_name'],
       'username': userInfo['username'],
       'is_verified': userInfo['is_verified'],
-      'profilePicUrl': userInfo['profile_pic_url'],
+      'profilePicUrl': userInfo['profile_pic_url_hd'],
       'followers': userInfo['edge_followed_by']['count'],
       'postCount': userInfo['edge_owner_to_timeline_media']['count'],
     };
