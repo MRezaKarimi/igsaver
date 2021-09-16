@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 class FileDownloader {
-  final Dio _dio = Dio();
+  final Dio _dio = Dio(BaseOptions(headers: {
+    'User-Agent':
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0'
+  }));
   final String _imagesDownloadPath = '/storage/emulated/0/IGSaver/images';
   final String _videosDownloadPath = '/storage/emulated/0/IGSaver/videos';
 
