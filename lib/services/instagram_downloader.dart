@@ -126,7 +126,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
     }
 
     if (userInfo['edge_owner_to_timeline_media']['count'] == 0) {
-      throw AccountHaveNoPostException();
+      throw AccountHasNoPostException();
     }
 
     return {

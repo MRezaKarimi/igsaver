@@ -6,6 +6,6 @@ class UnknownPostTypeException implements Exception {}
 
 class PrivateAccountException implements Exception {}
 
-class AccountHaveNoPostException implements Exception {}
+class AccountHasNoPostException implements Exception {}
 
 class InvalidUrlException implements Exception {}

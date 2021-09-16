@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                     title: 'Oops! Account is private',
                     message: '',
                   );
-                } on AccountHaveNoPostException {
+                } on AccountHasNoPostException {
                   ErrorDialog.show(
                     context,
                     title: 'Account has no post!',
