@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 class SelectPost extends StatelessWidget {
   static const route = '/post_picker';
 
-  // Scaffold and it's subtree moved to a separate method because provider not recognizing
-  // Scaffold as Widget and throws error.
+  /// Scaffold and it's subtree moved to a separate method because provider not recognizing
+  /// Scaffold as Widget and throws error.
   Widget _buildPage(BuildContext context, Widget? _) {
     Map args = ModalRoute.of(context)?.settings.arguments as Map;
     int userID = int.parse(args['userID']);
@@ -22,16 +22,13 @@ class SelectPost extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        title: Provider.of<PostsList>(context).length == 0
-            ? Text('Select Posts')
-            : Text('${Provider.of<PostsList>(context).length} Post Selected'),
+        title: CounterText(),
       ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              // flex: 10,
               child: StreamBuilder<List<dynamic>>(
                 stream: profileDownloader.getProfilePosts(userID),
                 builder: (context, snapshot) {
@@ -48,7 +45,8 @@ class SelectPost extends StatelessWidget {
                         return GridItem(
                           data: data,
                           index: index,
-                          selectedPosts: Provider.of<PostsList>(context),
+                          selectedPosts:
+                              Provider.of<PostsList>(context, listen: false),
                         );
                       },
                     );
@@ -82,5 +80,16 @@ class SelectPost extends StatelessWidget {
       create: (context) => PostsList(),
       builder: _buildPage,
     );
+  }
+}
+
+class CounterText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    if (Provider.of<PostsList>(context).length == 0) {
+      return Text('Select Posts');
+    } else {
+      return Text('${Provider.of<PostsList>(context).length} Post Selected');
+    }
   }
 }
