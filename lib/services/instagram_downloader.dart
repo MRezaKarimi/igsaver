@@ -175,7 +175,6 @@ class InstagramProfileDownloader extends InstagramDownloader {
     List posts = [];
 
     while (hasNext) {
-      print('********fired********');
       http.Response response = await _get(profileAPI +
           queryHash +
           '&variables={"id":"$userID","first":50,"after":"$endCursor"}');
