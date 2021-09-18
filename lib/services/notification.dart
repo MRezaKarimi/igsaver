@@ -2,8 +2,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 class Notification {
-  int _counter = 0;
-
   Notification() {
     AwesomeNotifications().initialize(
       null,
@@ -20,11 +18,9 @@ class Notification {
   }
 
   void show(String filename) {
-    _counter++;
-
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: _counter,
+        id: filename.hashCode,
         channelKey: 'download_notification',
         title: 'Download Completed',
         body: filename,
