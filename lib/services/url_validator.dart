@@ -1,10 +1,10 @@
 class URLValidator {
   RegExp _removeParamsRegEx = RegExp(
-      'https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/',
+      r"https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/",
       caseSensitive: false);
 
   RegExp _urlMatchRegEx = RegExp(
-      'https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/.*',
+      r"https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/.*",
       caseSensitive: false);
 
   // Check if the given url is a valid instagram url or not.
