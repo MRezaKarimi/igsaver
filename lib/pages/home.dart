@@ -21,7 +21,7 @@ import 'package:igsaver/widgets/rounded_button.dart';
 import 'package:igsaver/widgets/error_dialog.dart';
 
 class Home extends StatefulWidget {
-  static const route = '/';
+  static const route = '/home';
 
   @override
   _HomeState createState() => _HomeState();
