@@ -24,5 +24,6 @@ class FileDownloader {
     } else {
       await _dio.download(url, '$_imagesDownloadPath/$filename');
     }
+    notification.show(filename);
   }
 }
