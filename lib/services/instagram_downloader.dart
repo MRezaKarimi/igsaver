@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:igsaver/models/posts_list.dart';
@@ -20,41 +21,41 @@ class InstagramDownloader {
     return response;
   }
 
-  void _dispatch(dynamic data, bool imagesOnly) {
-    switch (data['__typename']) {
+  Future<void> _dispatch(dynamic post, bool imagesOnly) async {
+    switch (post['__typename']) {
       case 'GraphSidecar':
-        _downloadAlbum(data, imagesOnly);
+        _downloadAlbum(post, imagesOnly);
         break;
       case 'GraphVideo':
         if (imagesOnly) {
           break;
         }
-        _downloadVideo(data);
+        await _downloadVideo(post);
         break;
       case 'GraphImage':
-        _downloadImage(data);
+        await _downloadImage(post);
         break;
+
       default:
-        // 'Unknown post type. Post should be image, video, album, reel or IGTv.'
         throw UnknownPostTypeException();
     }
   }
 
-  void _downloadAlbum(dynamic data, bool imagesOnly) {
-    List albumItems = data['edge_sidecar_to_children']['edges'];
-    albumItems.forEach((element) {
+  void _downloadAlbum(dynamic post, bool imagesOnly) async {
+    List album = post['edge_sidecar_to_children']['edges'];
+    for (var element in album) {
       Map item = element['node'];
 
-      // Add owner's username to the data manually, because it's not provided in `node` object by Instagram API
-      //and it's necessary for naming files.
+      /// Add owner's username to the data manually, because it's not provided in `node` object by Instagram API
+      /// and it's necessary for naming files.
       item['owner'] = {};
-      item['owner']['username'] = data['owner']['username'];
+      item['owner']['username'] = post['owner']['username'];
 
-      _dispatch(item, imagesOnly);
-    });
+      await _dispatch(item, imagesOnly);
+    }
   }
 
-  void _downloadImage(dynamic data) {
+  Future<void> _downloadImage(dynamic data) async {
     String imageURL = data['display_url'];
     String imageFilename = "${data['owner']['username']}";
 
@@ -64,10 +65,10 @@ class InstagramDownloader {
       imageFilename = "$imageFilename ${data['shortcode']}.jpg";
     }
 
-    fileDownloader.download(imageURL, imageFilename);
+    await fileDownloader.download(imageURL, imageFilename);
   }
 
-  void _downloadVideo(dynamic data) {
+  Future<void> _downloadVideo(dynamic data) async {
     String videoURL = data['video_url'];
     String videoFilename = "${data['owner']['username']}";
 
@@ -81,7 +82,7 @@ class InstagramDownloader {
       videoFilename = "$videoFilename ${data['title']}.mp4";
     }
 
-    fileDownloader.download(videoURL, videoFilename, isVideo: true);
+    await fileDownloader.download(videoURL, videoFilename, isVideo: true);
   }
 }
 
@@ -94,6 +95,11 @@ class InstagramPostDownloader extends InstagramDownloader {
     }
 
     String cleanedUrl = urlValidator.removeParams(url);
+
+    if (cleanedUrl == '') {
+      throw InvalidUrlException();
+    }
+
     http.Response response = await _get(cleanedUrl + '?__a=1');
 
     if (response.statusCode == 404) {
@@ -140,17 +146,19 @@ class InstagramProfileDownloader extends InstagramDownloader {
     };
   }
 
-  // Download posts selected by user
-  Future<void> downloadSelectedPosts(PostsList posts) async {
-    posts.list.forEach((key, value) {
-      _dispatch(value, false);
-    });
+  /// Download [posts] which are selected by user
+  void downloadSelectedPosts(PostsList posts) async {
+    var postsList = Map.of(posts.list);
+    for (var post in postsList.values) {
+      await _dispatch(post, false);
+    }
   }
 
-  // Download all posts of a profile
-  Future<void> downloadAllPosts(int userID, bool imagesOnly) async {
+  /// Downloads all posts of the profile with given [userID]
+  void downloadAllPosts(int userID, bool imagesOnly) async {
     bool hasNext = true;
     String endCursor = '';
+    Queue downloadQueue = Queue();
 
     while (hasNext) {
       http.Response response = await _get(profileAPI +
@@ -161,11 +169,15 @@ class InstagramProfileDownloader extends InstagramDownloader {
           ['edge_owner_to_timeline_media'];
 
       for (var post in data['edges']) {
-        _dispatch(post['node'], imagesOnly);
+        downloadQueue.add(post['node']);
       }
 
       hasNext = data['page_info']['has_next_page'];
       endCursor = data['page_info']['end_cursor'];
+    }
+
+    while (downloadQueue.isNotEmpty) {
+      await _dispatch(downloadQueue.removeFirst(), imagesOnly);
     }
   }
 
