@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:igsaver/services/notification.dart';
+import 'package:igsaver/services/settings_service.dart';
 
 class FileDownloader {
   final Dio _dio = Dio(
@@ -13,7 +14,9 @@ class FileDownloader {
   );
   final String _imagesDownloadPath = '/storage/emulated/0/IGSaver/images';
   final String _videosDownloadPath = '/storage/emulated/0/IGSaver/videos';
+
   final Notification notification = Notification();
+  final SettingsService settings = SettingsService();
 
   FileDownloader() {
     _createDirectories();
@@ -31,6 +34,9 @@ class FileDownloader {
     } else {
       await _dio.download(url, '$_imagesDownloadPath/$filename');
     }
-    notification.show(filename);
+
+    if (settings.get(SettingsService.showNotification, true)) {
+      notification.show(filename);
+    }
   }
 }
