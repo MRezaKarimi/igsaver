@@ -37,17 +37,19 @@ class _HomeState extends State<Home> {
   String username = '';
 
   void watchClipboard() async {
-    await for (var data in clipboard.getClipboardData()) {
-      try {
-        await igPostDownloader.downloadPost(
-          data,
-          settings.get(SettingsService.imagesOnly, true),
-        );
-        // Ignore invalid URL exception
-      } on InvalidUrlException {
-        continue;
-      } on PostNotFoundException {
-        continue;
+    if (settings.get(SettingsService.watchClipboard, true)) {
+      await for (var data in clipboard.getClipboardData()) {
+        try {
+          await igPostDownloader.downloadPost(
+            data,
+            settings.get(SettingsService.imagesOnly, true),
+          );
+          // Ignore invalid URL exception
+        } on InvalidUrlException {
+          continue;
+        } on PostNotFoundException {
+          continue;
+        }
       }
     }
   }
