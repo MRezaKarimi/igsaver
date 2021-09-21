@@ -16,7 +16,10 @@ class _HistoryState extends State<History> {
     Directory dir = Directory('/storage/emulated/0/IGSaver/images');
     List<FileSystemEntity> entities = await dir.list().toList();
     Iterable<File> files = entities.whereType<File>();
-    return files.toList();
+    return files.toList()
+      ..sort((a, b) {
+        return b.lastModifiedSync().compareTo(a.lastModifiedSync());
+      });
   }
 
   @override
