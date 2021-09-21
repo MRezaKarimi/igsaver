@@ -62,8 +62,8 @@ class SelectPost extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10),
               child: FilledRoundedButton(
                 text: 'Download Selected',
-                onPressed: () async {
-                  await profileDownloader.downloadSelectedPosts(
+                onPressed: () {
+                  profileDownloader.downloadSelectedPosts(
                       Provider.of<PostsList>(context, listen: false));
                 },
               ),
