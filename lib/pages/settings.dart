@@ -43,17 +43,6 @@ class _SettingsState extends State<Settings> {
               },
             ),
             SettingsCard(
-              title: 'Show Notification',
-              description: 'Show notification when download completed.',
-              switchValue: notificationSwitch,
-              switchCallback: (bool value) {
-                setState(() {
-                  notificationSwitch = value;
-                });
-                settings.set(SettingsService.showNotification, value);
-              },
-            ),
-            SettingsCard(
               title: 'Only Download Images',
               description:
                   'Skip downloading videos when new url copied to the clipboard. Turning this off, results in more data usage.',
@@ -63,6 +52,17 @@ class _SettingsState extends State<Settings> {
                   imagesOnlySwitch = value;
                 });
                 settings.set(SettingsService.imagesOnly, value);
+              },
+            ),
+            SettingsCard(
+              title: 'Show Notification',
+              description: 'Show notification when download completed.',
+              switchValue: notificationSwitch,
+              switchCallback: (bool value) {
+                setState(() {
+                  notificationSwitch = value;
+                });
+                settings.set(SettingsService.showNotification, value);
               },
             ),
           ],
