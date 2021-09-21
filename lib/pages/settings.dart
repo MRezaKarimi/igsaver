@@ -15,8 +15,9 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    bool clipboardSwitch = settings.get(SettingsService.clipboard, true);
-    bool vibrateSwitch = settings.get(SettingsService.vibrate, true);
+    bool clipboardSwitch = settings.get(SettingsService.watchClipboard, true);
+    bool notificationSwitch =
+        settings.get(SettingsService.showNotification, true);
     bool imagesOnlySwitch = settings.get(SettingsService.imagesOnly, true);
 
     return Scaffold(
@@ -32,30 +33,30 @@ class _SettingsState extends State<Settings> {
             SettingsCard(
               title: 'Watch Clipboard',
               description:
-                  'Automatically start downloading when URL copied to the clipboard.',
+                  'Automatically download post when URL copied to the clipboard. Restart required if changed.',
               switchValue: clipboardSwitch,
               switchCallback: (bool value) {
                 setState(() {
                   clipboardSwitch = value;
                 });
-                settings.set(SettingsService.clipboard, value);
+                settings.set(SettingsService.watchClipboard, value);
               },
             ),
             SettingsCard(
-              title: 'Vibrate On Download',
-              description: 'Vibrate when a post downloaded successfully.',
-              switchValue: vibrateSwitch,
+              title: 'Show Notification',
+              description: 'Show notification when download completed.',
+              switchValue: notificationSwitch,
               switchCallback: (bool value) {
                 setState(() {
-                  vibrateSwitch = value;
+                  notificationSwitch = value;
                 });
-                settings.set(SettingsService.vibrate, value);
+                settings.set(SettingsService.showNotification, value);
               },
             ),
             SettingsCard(
               title: 'Only Download Images',
               description:
-                  'Skip downloading videos when new url copied to the clipboard. Turning this off results in more data usage.',
+                  'Skip downloading videos when new url copied to the clipboard. Turning this off, results in more data usage.',
               switchValue: imagesOnlySwitch,
               switchCallback: (bool value) {
                 setState(() {

@@ -7,8 +7,8 @@ class SettingsService {
     await Hive.openBox('settings');
   }
 
-  static const clipboard = 'CLIPBOARD';
-  static const vibrate = 'VIBRATE';
+  static const watchClipboard = 'CLIPBOARD';
+  static const showNotification = 'VIBRATE';
   static const imagesOnly = 'IMAGES_ONLY';
 
   bool get(String key, bool defaultValue) {
