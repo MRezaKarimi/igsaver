@@ -18,7 +18,8 @@ class FileDownloader {
     await Directory(_videosDownloadPath).create(recursive: true);
   }
 
-  void download(String url, String filename, {bool isVideo: false}) async {
+  Future<void> download(String url, String filename,
+      {bool isVideo: false}) async {
     if (isVideo) {
       await _dio.download(url, '$_videosDownloadPath/$filename');
     } else {
