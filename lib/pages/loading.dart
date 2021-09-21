@@ -7,7 +7,7 @@ import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/error_dialog.dart';
 
 class Loading extends StatelessWidget {
-  static const String route = '/loading';
+  static const String route = '/';
 
   Future<bool> _hasNetwork() async {
     Future.delayed(Duration(seconds: 1));
