@@ -46,6 +46,8 @@ class _HomeState extends State<Home> {
         // Ignore invalid URL exception
       } on InvalidUrlException {
         continue;
+      } on PostNotFoundException {
+        continue;
       }
     }
   }
