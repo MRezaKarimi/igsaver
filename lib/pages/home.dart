@@ -78,51 +78,50 @@ class _HomeState extends State<Home> {
             FilledRoundedButton(
               text: 'Search',
               onPressed: () async {
-                if (username == '') {
-                  return;
-                }
-                try {
-                  Map userInfo =
-                      await igProfileDownloader.getUserInfo(username);
+                if (username != '') {
+                  try {
+                    Map userInfo =
+                        await igProfileDownloader.getUserInfo(username);
 
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    ProfileDownload.route,
-                    ModalRoute.withName(Home.route),
-                    arguments: {'userInfo': userInfo},
-                  );
-                } on UserNotFoundException {
-                  ErrorDialog.show(
-                    context,
-                    title: 'User Not Found!',
-                    message: '',
-                  );
-                } on PrivateAccountException {
-                  ErrorDialog.show(
-                    context,
-                    title: 'Oops! Account is private',
-                    message: '',
-                  );
-                } on AccountHasNoPostException {
-                  ErrorDialog.show(
-                    context,
-                    title: 'Account has no post!',
-                    message: '',
-                  );
-                } on SocketException {
-                  ErrorDialog.show(
-                    context,
-                    title: 'Connection Error!',
-                    message:
-                        'Check if your device have internet connection and try again.',
-                  );
-                } catch (_) {
-                  ErrorDialog.show(
-                    context,
-                    title: 'Oops! Something went wrong!',
-                    message:
-                        'Try again after a while or report problem to developer.',
-                  );
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      ProfileDownload.route,
+                      ModalRoute.withName(Home.route),
+                      arguments: {'userInfo': userInfo},
+                    );
+                  } on UserNotFoundException {
+                    ErrorDialog.show(
+                      context,
+                      title: 'User Not Found!',
+                      message: '',
+                    );
+                  } on PrivateAccountException {
+                    ErrorDialog.show(
+                      context,
+                      title: 'Oops! Account is private',
+                      message: '',
+                    );
+                  } on AccountHasNoPostException {
+                    ErrorDialog.show(
+                      context,
+                      title: 'Account has no post!',
+                      message: '',
+                    );
+                  } on SocketException {
+                    ErrorDialog.show(
+                      context,
+                      title: 'Connection Error!',
+                      message:
+                          'Check if your device have internet connection and try again.',
+                    );
+                  } catch (_) {
+                    ErrorDialog.show(
+                      context,
+                      title: 'Oops! Something went wrong!',
+                      message:
+                          'Try again after a while or report problem to developer.',
+                    );
+                  }
                 }
               },
             ),
