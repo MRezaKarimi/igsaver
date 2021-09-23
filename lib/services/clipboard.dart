@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' as flutterServices show Clipboard;
 
 class Clipboard {
   bool _active = true;
+  final Duration duration = Duration(milliseconds: 500);
 
   Stream<String> getClipboardData() async* {
     String currentData = '';
@@ -15,7 +16,7 @@ class Clipboard {
           yield currentData;
         }
       }
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(duration);
     }
   }
 
