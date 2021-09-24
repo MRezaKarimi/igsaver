@@ -216,6 +216,7 @@ class _HomeState extends State<Home> {
                           color: kPrimaryColor,
                           size: 30,
                         ),
+                        tooltip: 'History',
                       ),
                       FilledRoundedButton(
                         text: 'Download Profile',
@@ -232,6 +233,7 @@ class _HomeState extends State<Home> {
                           color: kPrimaryColor,
                           size: 30,
                         ),
+                        tooltip: 'Settings',
                       ),
                     ],
                   ),
