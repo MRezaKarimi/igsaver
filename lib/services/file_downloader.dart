@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:igsaver/services/notification.dart';
 import 'package:igsaver/services/settings_service.dart';
 
+/// Downloads files from a remote server and saves them to local storage.
 class FileDownloader {
   final Dio _dio = Dio(
     BaseOptions(

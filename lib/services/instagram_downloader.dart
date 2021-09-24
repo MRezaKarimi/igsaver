@@ -6,12 +6,15 @@ import 'file_downloader.dart';
 import 'package:igsaver/services/url_validator.dart';
 import 'package:igsaver/exceptions/exceptions.dart';
 
+/// Base utilities for downloading from instagram.
 class InstagramDownloader {
   final FileDownloader fileDownloader = FileDownloader();
 
-  Future<http.Response> _get(String uri) async {
+  /// Sends http request to [url] with user-agent defined as Firefox on Ubuntu to
+  /// prevent blocking IP by instagram.
+  Future<http.Response> _get(String url) async {
     http.Response response = await http.get(
-      Uri.parse(uri),
+      Uri.parse(url),
       headers: {
         'User-Agent':
             'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0'
@@ -21,6 +24,8 @@ class InstagramDownloader {
     return response;
   }
 
+  /// Gets an instagram [post] as json and dispatches it to relevant download method
+  /// based on "__typename" key in json data.
   Future<void> _dispatch(dynamic post, bool imagesOnly) async {
     switch (post['__typename']) {
       case 'GraphSidecar':
@@ -41,12 +46,14 @@ class InstagramDownloader {
     }
   }
 
+  /// Loops through posts of an album and calls [_dispatch] for each them.
   void _downloadAlbum(dynamic post, bool imagesOnly) async {
     List album = post['edge_sidecar_to_children']['edges'];
     for (var element in album) {
       Map item = element['node'];
 
-      /// Add owner's username to the data manually, because it's not provided in `node` object by Instagram API
+      /// Adds owner's username to the data manually, because it's not
+      /// provided in `node` object by Instagram API
       /// and it's necessary for naming files.
       item['owner'] = {};
       item['owner']['username'] = post['owner']['username'];
@@ -86,6 +93,7 @@ class InstagramDownloader {
   }
 }
 
+/// Provides method for downloading a single post.
 class InstagramPostDownloader extends InstagramDownloader {
   final URLValidator urlValidator = URLValidator();
 
@@ -112,11 +120,13 @@ class InstagramPostDownloader extends InstagramDownloader {
   }
 }
 
+/// Utilities for instagram bulk download.
 class InstagramProfileDownloader extends InstagramDownloader {
   final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
   final String profileAPI =
       'https://www.instagram.com/graphql/query/?query_hash=';
 
+  /// Gets [username] of an instagram user and returns basic infos about user.
   Future<Map> getUserInfo(String username) async {
     http.Response response =
         await _get('https://www.instagram.com/$username/?__a=1');
@@ -146,7 +156,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
     };
   }
 
-  /// Download [posts] which are selected by user
+  /// Downloads selected [posts] of an instagram user.
   void downloadSelectedPosts(PostsList posts) async {
     var postsList = Map.of(posts.list);
     for (var post in postsList.values) {
@@ -154,7 +164,11 @@ class InstagramProfileDownloader extends InstagramDownloader {
     }
   }
 
-  /// Downloads all posts of the profile with given [userID]
+  /// Downloads all posts of an instagram user with given [userID].
+  ///
+  /// [userID] can be determined using [getUserInfo] method.
+  ///
+  /// [imagesOnly] indicates that videos should be downloaded or not.
   void downloadAllPosts(int userID, bool imagesOnly) async {
     bool hasNext = true;
     String endCursor = '';
@@ -181,6 +195,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
     }
   }
 
+  /// Returns an instagram user's posts as stream.
   Stream<List> getProfilePosts(int userID) async* {
     bool hasNext = true;
     String endCursor = '';

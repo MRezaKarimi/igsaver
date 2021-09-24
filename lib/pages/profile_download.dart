@@ -16,6 +16,7 @@ class ProfileDownload extends StatefulWidget {
 class _ProfileDownloadState extends State<ProfileDownload> {
   InstagramProfileDownloader profileDownloader = InstagramProfileDownloader();
 
+  /// Gets number of followers and returns a human readable string.
   String _getRoundedFollowers(int num) {
     if (num > 1000000) {
       return (num / 1000000).toStringAsFixed(1) + 'm';
@@ -27,19 +28,25 @@ class _ProfileDownloadState extends State<ProfileDownload> {
     }
   }
 
+  /// Shows user a dialog with two [RoundedButton] and asks user
+  /// to select which methods should be used to download profile posts.
+  ///
+  /// Two available methods are:
+  /// 1. Download Images Only: only download images and ignore videos and IGTVs
+  /// 2. Download All Posts: download all posts, images and videos
   Future<void> _showDownloadConfirmDialog(int userID) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return RoundedDialog(
-          title: Text('Download All Posts'),
+          title: Text('Download Profile Posts'),
           children: <Widget>[
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 RoundedButton(
-                  text: 'Download Images',
+                  text: 'Download Images Only',
                   onPressed: () async {
                     profileDownloader.downloadAllPosts(userID, true);
                   },
@@ -78,7 +85,6 @@ class _ProfileDownloadState extends State<ProfileDownload> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              // flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

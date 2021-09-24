@@ -77,6 +77,10 @@ class SelectPost extends StatelessWidget {
   }
 }
 
+/// Creates [Text] widget for [AppBar.title].
+///
+/// It created as a separate class to prevent Provider from building the
+/// whole widget tree unnecessarily.
 class CounterText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

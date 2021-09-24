@@ -12,6 +12,8 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
+  /// Reads images from IGSaver download directory and
+  /// returns a list of [File] objects sorted based on last modified date.
   Future<List<File>> _getImages() async {
     Directory dir = Directory('/storage/emulated/0/IGSaver/images');
     List<FileSystemEntity> entities = await dir.list().toList();
@@ -82,41 +84,3 @@ class _HistoryState extends State<History> {
     );
   }
 }
-
-// Consumer<DownloadHistory>(
-//           builder: (context, downloadHistory, child) {
-//             List<Widget> listViewItems = [];
-//             for (var item in downloadHistory.downloadsList) {
-//               listViewItems.add(
-//                 ListTile(
-//                   leading: Icon(CupertinoIcons.arrow_down_circle),
-//                   title: Text(item.title),
-//                   subtitle: LinearProgressIndicator(
-//                     value: item.percentage,
-//                     color: kPrimaryColor,
-//                     backgroundColor: Colors.grey[200],
-//                   ),
-//                 ),
-//               );
-//             }
-//             return ListView(
-//               reverse: true,
-//               children: listViewItems,
-//               // ListTile(
-//               //   leading: Icon(CupertinoIcons.arrow_down_circle),
-//               //   title: Text('Natgeo iuho8iugyuv.jpeg'),
-//               //   subtitle: LinearProgressIndicator(
-//               //     value: .25,
-//               //     color: kPrimaryColor,
-//               //     backgroundColor: Colors.grey[200],
-//               //   ),
-//               // ),
-//               // ListTile(
-//               //   leading: Icon(CupertinoIcons.check_mark_circled),
-//               //   title: Text('Natgeo iuho8iugyuv.jpeg'),
-//               //   subtitle: Text('Download Completed'),
-//               // ),
-//             );
-//           },
-//         ),
-

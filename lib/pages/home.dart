@@ -36,6 +36,9 @@ class _HomeState extends State<Home> {
   String? url;
   String username = '';
 
+  /// Listens to stream returned by [Clipboard.getClipboardData].
+  ///
+  /// When a new URL fetched from clipboard, calls [InstagramPostDownloader.downloadPost].
   void watchClipboard() async {
     if (settings.get(SettingsService.watchClipboard, true)) {
       await for (var data in clipboard.getClipboardData()) {
@@ -241,9 +244,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  @override
+  /*@override
   void dispose() {
     clipboard.stop();
     super.dispose();
-  }
+  }*/
 }
