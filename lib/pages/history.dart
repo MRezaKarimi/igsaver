@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/image_viewer.dart';
 
-class History extends StatefulWidget {
+class History extends StatelessWidget {
   static const route = '/history';
 
-  @override
-  _HistoryState createState() => _HistoryState();
-}
-
-class _HistoryState extends State<History> {
   /// Reads images from IGSaver download directory and
   /// returns a list of [File] objects sorted based on last modified date.
   Future<List<File>> _getImages() async {
@@ -71,13 +66,14 @@ class _HistoryState extends State<History> {
                   style: TextStyle(fontSize: 16),
                 ),
               );
+            } else {
+              return Center(
+                child: Text(
+                  'Loading Images',
+                  style: TextStyle(fontSize: 16),
+                ),
+              );
             }
-            return Center(
-              child: Text(
-                'Loading Images',
-                style: TextStyle(fontSize: 16),
-              ),
-            );
           },
         ),
       ),
