@@ -1,10 +1,10 @@
 /// Validates and cleans instagram urls
 class URLValidator {
-  RegExp _removeParamsRegEx = RegExp(
+  var _removeParamsRegEx = RegExp(
       r"https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/",
       caseSensitive: false);
 
-  RegExp _urlMatchRegEx = RegExp(
+  var _urlMatchRegEx = RegExp(
       r"https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/.*",
       caseSensitive: false);
 

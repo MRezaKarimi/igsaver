@@ -15,9 +15,9 @@ class _HistoryState extends State<History> {
   /// Reads images from IGSaver download directory and
   /// returns a list of [File] objects sorted based on last modified date.
   Future<List<File>> _getImages() async {
-    Directory dir = Directory('/storage/emulated/0/IGSaver/images');
-    List<FileSystemEntity> entities = await dir.list().toList();
-    Iterable<File> files = entities.whereType<File>();
+    var dir = Directory('/storage/emulated/0/IGSaver/images');
+    var entities = await dir.list().toList();
+    var files = entities.whereType<File>();
     return files.toList()
       ..sort((a, b) {
         return b.lastModifiedSync().compareTo(a.lastModifiedSync());

@@ -15,7 +15,7 @@ class SelectPost extends StatelessWidget {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)?.settings.arguments as Map;
     int userID = int.parse(args['userID']);
-    InstagramProfileDownloader profileDownloader = InstagramProfileDownloader();
+    var profileDownloader = InstagramProfileDownloader();
 
     return ChangeNotifierProvider<PostsList>(
       create: (context) => PostsList(),

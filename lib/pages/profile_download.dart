@@ -90,6 +90,11 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                 children: <Widget>[
                   CircleAvatar(
                     radius: 100,
+                    child: GestureDetector(
+                      onLongPress: () {
+                        print('object');
+                      },
+                    ),
                     backgroundImage: NetworkImage(userInfo['profilePicUrl']),
                   ),
                   Text(

@@ -5,7 +5,7 @@ import 'package:igsaver/services/settings_service.dart';
 
 /// Downloads files from a remote server and saves them to local storage.
 class FileDownloader {
-  final Dio _dio = Dio(
+  final _dio = Dio(
     BaseOptions(
       headers: {
         'User-Agent':
@@ -13,11 +13,11 @@ class FileDownloader {
       },
     ),
   );
-  final String _imagesDownloadPath = '/storage/emulated/0/IGSaver/images';
-  final String _videosDownloadPath = '/storage/emulated/0/IGSaver/videos';
+  final _imagesDownloadPath = '/storage/emulated/0/IGSaver/images';
+  final _videosDownloadPath = '/storage/emulated/0/IGSaver/videos';
 
-  final Notification notification = Notification();
-  final SettingsService settings = SettingsService();
+  final notification = Notification();
+  final settings = SettingsService();
 
   FileDownloader() {
     _createDirectories();

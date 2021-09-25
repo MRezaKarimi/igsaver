@@ -8,12 +8,12 @@ import 'package:igsaver/exceptions/exceptions.dart';
 
 /// Base utilities for downloading from instagram.
 class InstagramDownloader {
-  final FileDownloader fileDownloader = FileDownloader();
+  final fileDownloader = FileDownloader();
 
-  /// Sends http request to [url] with user-agent defined as Firefox on Ubuntu to
-  /// prevent blocking IP by instagram.
+  /// Sends http request to [url] with user-agent defined as Firefox on Ubuntu
+  /// to prevent blocking IP by instagram.
   Future<http.Response> _get(String url) async {
-    http.Response response = await http.get(
+    var response = await http.get(
       Uri.parse(url),
       headers: {
         'User-Agent':
@@ -95,20 +95,20 @@ class InstagramDownloader {
 
 /// Provides method for downloading a single post.
 class InstagramPostDownloader extends InstagramDownloader {
-  final URLValidator urlValidator = URLValidator();
+  final urlValidator = URLValidator();
 
   Future<void> downloadPost(String url, bool imagesOnly) async {
     if (!urlValidator.isValid(url)) {
       throw InvalidUrlException();
     }
 
-    String cleanedUrl = urlValidator.removeParams(url);
+    var cleanedUrl = urlValidator.removeParams(url);
 
     if (cleanedUrl == '') {
       throw InvalidUrlException();
     }
 
-    http.Response response = await _get(cleanedUrl + '?__a=1');
+    var response = await _get(cleanedUrl + '?__a=1');
 
     if (response.statusCode == 404) {
       throw PostNotFoundException();
@@ -122,14 +122,12 @@ class InstagramPostDownloader extends InstagramDownloader {
 
 /// Utilities for instagram bulk download.
 class InstagramProfileDownloader extends InstagramDownloader {
-  final String queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
-  final String profileAPI =
-      'https://www.instagram.com/graphql/query/?query_hash=';
+  final queryHash = '8c2a529969ee035a5063f2fc8602a0fd';
+  final profileAPI = 'https://www.instagram.com/graphql/query/?query_hash=';
 
   /// Gets [username] of an instagram user and returns basic infos about user.
   Future<Map> getUserInfo(String username) async {
-    http.Response response =
-        await _get('https://www.instagram.com/$username/?__a=1');
+    var response = await _get('https://www.instagram.com/$username/?__a=1');
 
     if (response.statusCode == 404) {
       throw UserNotFoundException();
@@ -170,12 +168,12 @@ class InstagramProfileDownloader extends InstagramDownloader {
   ///
   /// [imagesOnly] indicates that videos should be downloaded or not.
   void downloadAllPosts(int userID, bool imagesOnly) async {
-    bool hasNext = true;
-    String endCursor = '';
-    Queue downloadQueue = Queue();
+    var hasNext = true;
+    var endCursor = '';
+    var downloadQueue = Queue();
 
     while (hasNext) {
-      http.Response response = await _get(profileAPI +
+      var response = await _get(profileAPI +
           queryHash +
           '&variables={"id":"$userID","first":50,"after":"$endCursor"}');
 
@@ -197,12 +195,12 @@ class InstagramProfileDownloader extends InstagramDownloader {
 
   /// Returns an instagram user's posts as stream.
   Stream<List> getProfilePosts(int userID) async* {
-    bool hasNext = true;
-    String endCursor = '';
-    List posts = [];
+    var hasNext = true;
+    var endCursor = '';
+    var posts = [];
 
     while (hasNext) {
-      http.Response response = await _get(profileAPI +
+      var response = await _get(profileAPI +
           queryHash +
           '&variables={"id":"$userID","first":50,"after":"$endCursor"}');
 
