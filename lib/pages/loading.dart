@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -45,10 +44,10 @@ class Loading extends StatelessWidget {
   /// Otherwise requests for permission. If permission denied again,
   /// it shows an error dialog returns false.
   Future<bool> _checkStoragePermission(BuildContext context) async {
-    if (await Permission.storage.isGranted) {
+    if (await Permission.manageExternalStorage.isGranted) {
       return true;
     } else {
-      var status = await Permission.storage.request();
+      var status = await Permission.manageExternalStorage.request();
       if (status == PermissionStatus.granted) {
         return true;
       } else {
