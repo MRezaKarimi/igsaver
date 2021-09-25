@@ -51,6 +51,13 @@ class SelectPost extends StatelessWidget {
                           );
                         },
                       );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          'An Unexpected Error Occurred ',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      );
                     } else {
                       return Center(
                         child: Text('Loading Data'),
