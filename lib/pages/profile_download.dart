@@ -45,19 +45,19 @@ class _ProfileDownloadState extends State<ProfileDownload> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                RoundedButton(
-                  text: 'Download Images Only',
-                  onPressed: () async {
-                    profileDownloader.downloadAllPosts(userID, true);
-                  },
-                ),
-                FilledRoundedButton(
-                  text: 'Download All Posts',
-                  onPressed: () async {
-                    profileDownloader.downloadAllPosts(userID, false);
-                  },
-                ),
-              ],
+            RoundedButton(
+              text: 'Download Images Only',
+              onPressed: () async {
+                profileDownloader.downloadAllPosts(userID, true);
+              },
+            ),
+            FilledRoundedButton(
+              text: 'Download All Posts',
+              onPressed: () async {
+                profileDownloader.downloadAllPosts(userID, false);
+              },
+            ),
+          ],
             ),
           ],
         );
