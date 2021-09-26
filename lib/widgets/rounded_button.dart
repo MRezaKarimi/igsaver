@@ -3,11 +3,9 @@ import 'package:igsaver/constants.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
-  final Color color;
   final void Function() onPressed;
 
-  RoundedButton(
-      {required this.text, required this.onPressed, this.color: kPrimaryColor});
+  RoundedButton({required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +13,7 @@ class RoundedButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: color,
+          color: kPrimaryColor,
           fontSize: 18,
         ),
       ),
@@ -24,7 +22,7 @@ class RoundedButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        side: BorderSide(color: color, width: 2),
+        side: BorderSide(color: kPrimaryColor, width: 2),
       ),
       onPressed: onPressed,
     );
