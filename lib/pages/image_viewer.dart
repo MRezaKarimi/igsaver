@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -9,16 +8,26 @@ class ImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
-    String imagePath = args['image_path'];
+    ImageProvider image = args['image'];
+    Widget? child = args['child'];
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Center(
-          child: PhotoView(
-            imageProvider: FileImage(
-              File(imagePath),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: PhotoView(
+                imageProvider: image,
+                minScale: PhotoViewComputedScale.contained * 1,
+              ),
             ),
-          ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: child,
+            )
+          ],
         ),
       ),
     );
