@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
+import 'package:igsaver/pages/image_viewer.dart';
 import 'package:igsaver/pages/select_post.dart';
+import 'package:igsaver/services/file_downloader.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
 import 'package:igsaver/widgets/rounded_dialog.dart';
@@ -41,10 +43,6 @@ class _ProfileDownloadState extends State<ProfileDownload> {
         return RoundedDialog(
           title: Text('Download Profile Posts'),
           children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
             RoundedButton(
               text: 'Download Images Only',
               onPressed: () async {
@@ -58,8 +56,6 @@ class _ProfileDownloadState extends State<ProfileDownload> {
               },
             ),
           ],
-            ),
-          ],
         );
       },
     );
@@ -69,8 +65,8 @@ class _ProfileDownloadState extends State<ProfileDownload> {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     Map userInfo = args['userInfo'];
-
-    String followers = _getRoundedFollowers(userInfo['followers']);
+    var followers = _getRoundedFollowers(userInfo['followers']);
+    final fileDownloader = FileDownloader();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -91,8 +87,23 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                   CircleAvatar(
                     radius: 100,
                     child: GestureDetector(
-                      onLongPress: () {
-                        print('object');
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          ImageViewer.route,
+                          arguments: {
+                            'image': NetworkImage(userInfo['profilePicUrl']),
+                            'child': FilledRoundedButton(
+                              text: 'Save To Gallery',
+                              onPressed: () {
+                                fileDownloader.download(
+                                  userInfo['profilePicUrl'],
+                                  userInfo['username'],
+                                );
+                              },
+                            )
+                          },
+                        );
                       },
                     ),
                     backgroundImage: NetworkImage(userInfo['profilePicUrl']),
