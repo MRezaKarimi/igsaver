@@ -16,7 +16,6 @@ class Loading extends StatelessWidget {
   /// Otherwise shows an error dialog and returns false.
   Future<bool> _checkNetworkConnection(BuildContext context) async {
     bool isConnected;
-    await Future.delayed(Duration(seconds: 1));
 
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -44,7 +43,8 @@ class Loading extends StatelessWidget {
   /// Otherwise requests for permission. If permission denied again,
   /// it shows an error dialog returns false.
   Future<bool> _checkStoragePermission(BuildContext context) async {
-    if (await Permission.manageExternalStorage.isGranted) {
+    if (await Permission.manageExternalStorage.isGranted ||
+        await Permission.manageExternalStorage.isRestricted) {
       return true;
     } else {
       var status = await Permission.manageExternalStorage.request();
@@ -67,6 +67,7 @@ class Loading extends StatelessWidget {
   /// If both returned true,
   /// then [Home] page will be pushed to navigator
   void _initialStuffs(BuildContext context) async {
+    await Future.delayed(Duration(milliseconds: 500));
     await SettingsService.initialize();
     bool isConnected = await _checkNetworkConnection(context);
     bool hasPermission = await _checkStoragePermission(context);
