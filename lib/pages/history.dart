@@ -47,7 +47,9 @@ class History extends StatelessWidget {
                         context,
                         ImageViewer.route,
                         arguments: {
-                          'image_path': snapshot.data![index].path,
+                          'image': FileImage(
+                            File(snapshot.data![index].path),
+                          ),
                         },
                       );
                     },

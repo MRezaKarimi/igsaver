@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:igsaver/constants.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageViewer extends StatelessWidget {
@@ -14,17 +15,16 @@ class ImageViewer extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Align(
-              alignment: Alignment.center,
+            Expanded(
               child: PhotoView(
                 imageProvider: image,
                 minScale: PhotoViewComputedScale.contained * 1,
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
+            Container(
               child: child,
             )
           ],
