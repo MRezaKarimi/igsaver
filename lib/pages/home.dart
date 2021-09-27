@@ -13,7 +13,6 @@ import 'package:igsaver/pages/settings.dart';
 
 import 'package:igsaver/services/clipboard.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
-import 'package:igsaver/services/settings_service.dart';
 
 import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
@@ -30,37 +29,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var igPostDownloader = InstagramPostDownloader();
   var igProfileDownloader = InstagramProfileDownloader();
-  var settings = SettingsService();
   var clipboard = Clipboard();
 
   String? url;
   var username = '';
 
-  /// Listens to stream returned by [Clipboard.getClipboardData].
-  ///
-  /// When a new URL fetched from clipboard, calls [InstagramPostDownloader.downloadPost].
-  void watchClipboard() async {
-    if (settings.get(SettingsService.watchClipboard, true)) {
-      await for (var data in clipboard.getClipboardData()) {
-        try {
-          await igPostDownloader.downloadPost(
-            data,
-            settings.get(SettingsService.imagesOnly, true),
-          );
-          // Ignore invalid URL exception
-        } on InvalidUrlException {
-          continue;
-        } on PostNotFoundException {
-          continue;
-        }
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    watchClipboard();
+    clipboard.watchClipboard();
   }
 
   Future<void> _showUsernameInputDialog() async {
