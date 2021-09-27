@@ -13,17 +13,13 @@ class FileDownloader {
       },
     ),
   );
-  final _imagesDownloadPath = '/storage/emulated/0/IGSaver/images';
-  final _videosDownloadPath = '/storage/emulated/0/IGSaver/videos';
+  static const _imagesDownloadPath = '/storage/emulated/0/IGSaver/images';
+  static const _videosDownloadPath = '/storage/emulated/0/IGSaver/videos';
 
   final notification = Notification();
   final settings = SettingsService();
 
-  FileDownloader() {
-    _createDirectories();
-  }
-
-  void _createDirectories() async {
+  static Future<void> createDirectories() async {
     await Directory(_imagesDownloadPath).create(recursive: true);
     await Directory(_videosDownloadPath).create(recursive: true);
   }

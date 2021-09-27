@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:igsaver/services/file_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/home.dart';
@@ -63,14 +64,17 @@ class Loading extends StatelessWidget {
     }
   }
 
-  /// Calls [_checkNetworkConnection] and [_checkStoragePermission].
-  /// If both returned true,
-  /// then [Home] page will be pushed to navigator
-  void _initialStuffs(BuildContext context) async {
+  /// Initializes necessary services needed for app to working:
+  /// - open settings box in HiveDB
+  /// - check network connection
+  /// - check/ask storage permission
+  /// - create directories for saving images and videos
+  void _initialize(BuildContext context) async {
     await Future.delayed(Duration(milliseconds: 500));
     await SettingsService.initialize();
     bool isConnected = await _checkNetworkConnection(context);
     bool hasPermission = await _checkStoragePermission(context);
+    await FileDownloader.createDirectories();
 
     if (isConnected && hasPermission) {
       Navigator.pushReplacementNamed(context, Home.route);
@@ -79,7 +83,7 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _initialStuffs(context);
+    _initialize(context);
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: Center(
