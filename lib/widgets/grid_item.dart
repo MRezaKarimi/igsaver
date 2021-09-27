@@ -7,7 +7,7 @@ import 'package:igsaver/models/posts_list.dart';
 class GridItem extends StatefulWidget {
   final data;
   final int index;
-  PostsList selectedPosts;
+  final PostsList selectedPosts;
 
   GridItem(
       {required this.data, required this.index, required this.selectedPosts});
