@@ -4,9 +4,9 @@ import 'package:igsaver/exceptions/exceptions.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/services/settings_service.dart';
 
-/// A wrapper around flutter [flutterServices.Clipboard]
+/// Utilities for monitoring clipboard and auto-download instagram posts when new URL
+/// copied to the clipboard.
 class ClipboardMonitor {
-  bool _active = true;
   final duration = Duration(milliseconds: 500);
   final settings = SettingsService();
   final igPostDownloader = InstagramPostDownloader();
@@ -16,7 +16,7 @@ class ClipboardMonitor {
   Stream<String> _getClipboardData() async* {
     var currentData = '';
 
-    while (_active) {
+    while (true) {
       var clipboardData = await Clipboard.getData('text/plain');
       if (clipboardData != null) {
         if (clipboardData.text != currentData) {
@@ -28,8 +28,8 @@ class ClipboardMonitor {
     }
   }
 
-  /// Waits for new clipboard data to be returned from [_getClipboardData]
-  /// and calls [InstagramPostDownloader.downloadPost] if one is available.
+  /// Listens to [_getClipboardData] for new clipboard data.
+  /// If new data is available, calls [InstagramPostDownloader.downloadPost].
   void start() async {
     if (settings.get(SettingsService.watchClipboard, true)) {
       await for (var data in _getClipboardData()) {
