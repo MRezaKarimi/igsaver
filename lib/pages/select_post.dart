@@ -23,7 +23,14 @@ class SelectPost extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
           elevation: 0,
-          title: CounterText(),
+          title: Consumer<PostsList>(builder: (context, postsList, _) {
+            if (Provider.of<PostsList>(context).length == 0) {
+              return Text('Select Posts');
+            } else {
+              return Text(
+                  '${Provider.of<PostsList>(context).length} Post Selected');
+            }
+          }),
         ),
         body: SafeArea(
           child: Column(
@@ -81,20 +88,5 @@ class SelectPost extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-/// Creates [Text] widget for [AppBar.title].
-///
-/// It created as a separate class to prevent Provider from building the
-/// whole widget tree unnecessarily.
-class CounterText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    if (Provider.of<PostsList>(context).length == 0) {
-      return Text('Select Posts');
-    } else {
-      return Text('${Provider.of<PostsList>(context).length} Post Selected');
-    }
   }
 }
