@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:isolate';
-import 'package:flutter/services.dart' as flutterServices show Clipboard;
+import 'package:flutter/services.dart';
 import 'package:igsaver/exceptions/exceptions.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/services/settings_service.dart';
 
 /// A wrapper around flutter [flutterServices.Clipboard]
-class Clipboard {
+class ClipboardMonitor {
   bool _active = true;
   final duration = Duration(milliseconds: 500);
   final settings = SettingsService();
@@ -19,7 +17,7 @@ class Clipboard {
     var currentData = '';
 
     while (_active) {
-      var clipboardData = await flutterServices.Clipboard.getData('text/plain');
+      var clipboardData = await Clipboard.getData('text/plain');
       if (clipboardData != null) {
         if (clipboardData.text != currentData) {
           currentData = clipboardData.text!;
@@ -32,7 +30,7 @@ class Clipboard {
 
   /// Waits for new clipboard data to be returned from [_getClipboardData]
   /// and calls [InstagramPostDownloader.downloadPost] if one is available.
-  void watchClipboard() async {
+  void start() async {
     if (settings.get(SettingsService.watchClipboard, true)) {
       await for (var data in _getClipboardData()) {
         try {

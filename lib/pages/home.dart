@@ -11,7 +11,7 @@ import 'package:igsaver/pages/history.dart';
 import 'package:igsaver/pages/profile_download.dart';
 import 'package:igsaver/pages/settings.dart';
 
-import 'package:igsaver/services/clipboard.dart';
+import 'package:igsaver/services/clipboard_monitor.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 
 import 'package:igsaver/widgets/rounded_dialog.dart';
@@ -29,7 +29,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var igPostDownloader = InstagramPostDownloader();
   var igProfileDownloader = InstagramProfileDownloader();
-  var clipboard = Clipboard();
+  var clipboardMonitor = ClipboardMonitor();
 
   String? url;
   var username = '';
@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    clipboard.watchClipboard();
+    clipboardMonitor.start();
   }
 
   Future<void> _showUsernameInputDialog() async {
