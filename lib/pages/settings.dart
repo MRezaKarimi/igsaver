@@ -33,7 +33,7 @@ class _SettingsState extends State<Settings> {
             SettingsCard(
               title: 'Watch Clipboard',
               description:
-                  'Automatically download post when URL copied to the clipboard. Restart required if changed.',
+                  'Automatically download post when URL copied to the clipboard. Only works in Android 9 and below. Restart required if changed.',
               switchValue: clipboardSwitch,
               switchCallback: (bool value) {
                 setState(() {
