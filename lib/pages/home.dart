@@ -116,109 +116,111 @@ class _HomeState extends State<Home> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kPrimaryColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Text(
-                'IGSaver',
-                style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.white,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Text(
+                  'IGSaver',
+                  style: TextStyle(
+                    fontSize: 40,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              padding:
-                  EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+            Expanded(
+              flex: 3,
+              child: Container(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Expanded(
-                        child: RoundedTextField(
-                          hint: 'Paste Link Here',
-                          keyboardType: TextInputType.url,
-                          onChanged: (value) {
-                            url = value;
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Expanded(
+                          child: RoundedTextField(
+                            hint: 'Paste Link Here',
+                            keyboardType: TextInputType.url,
+                            onChanged: (value) {
+                              url = value;
+                            },
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            CupertinoIcons.arrow_down_circle,
+                            color: kPrimaryColor,
+                            size: 35,
+                          ),
+                          onPressed: () async {
+                            try {
+                              await igPostDownloader.downloadPost(
+                                  url ?? '', false);
+                            } on InvalidUrlException {
+                              ErrorDialog.show(
+                                context,
+                                title: 'Invalid URL!',
+                                message:
+                                    'The given URL is not a valid instagram URL.',
+                              );
+                            }
                           },
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          CupertinoIcons.arrow_down_circle,
-                          color: kPrimaryColor,
-                          size: 35,
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, History.route);
+                          },
+                          icon: Icon(
+                            CupertinoIcons.clock,
+                            color: kPrimaryColor,
+                            size: 30,
+                          ),
+                          tooltip: 'History',
                         ),
-                        onPressed: () async {
-                          try {
-                            await igPostDownloader.downloadPost(
-                                url ?? '', false);
-                          } on InvalidUrlException {
-                            ErrorDialog.show(
-                              context,
-                              title: 'Invalid URL!',
-                              message:
-                                  'The given URL is not a valid instagram URL.',
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, History.route);
-                        },
-                        icon: Icon(
-                          CupertinoIcons.clock,
-                          color: kPrimaryColor,
-                          size: 30,
+                        FilledRoundedButton(
+                          text: 'Download Profile',
+                          onPressed: () {
+                            _showUsernameInputDialog();
+                          },
                         ),
-                        tooltip: 'History',
-                      ),
-                      FilledRoundedButton(
-                        text: 'Download Profile',
-                        onPressed: () {
-                          _showUsernameInputDialog();
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Settings.route);
-                        },
-                        icon: Icon(
-                          CupertinoIcons.settings,
-                          color: kPrimaryColor,
-                          size: 30,
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Settings.route);
+                          },
+                          icon: Icon(
+                            CupertinoIcons.settings,
+                            color: kPrimaryColor,
+                            size: 30,
+                          ),
+                          tooltip: 'Settings',
                         ),
-                        tooltip: 'Settings',
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
