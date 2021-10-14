@@ -9,7 +9,7 @@
 
 
    <application
-        android:label="igsaver"
+        android:label="IGSaver"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
