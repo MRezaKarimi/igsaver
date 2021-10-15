@@ -18,7 +18,6 @@ class IGSaver extends StatelessWidget {
       title: 'IGSaver',
       initialRoute: '/',
       routes: {
-        // Loading.route: (context) => Loading(),
         Home.route: (context) => Home(),
         Settings.route: (context) => Settings(),
         History.route: (context) => History(),
