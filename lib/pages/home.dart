@@ -126,8 +126,9 @@ class _HomeState extends State<Home> {
                 child: Text(
                   'IGSaver',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 75,
                     color: Colors.white,
+                    fontFamily: 'FreeScript',
                   ),
                 ),
               ),
