@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:igsaver/pages/image_viewer.dart';
 import 'package:igsaver/pages/select_post.dart';
 import 'package:igsaver/pages/history.dart';
-import 'package:igsaver/pages/loading.dart';
 import 'package:igsaver/pages/profile_download.dart';
 import 'package:igsaver/pages/settings.dart';
 import 'package:igsaver/pages/home.dart';
