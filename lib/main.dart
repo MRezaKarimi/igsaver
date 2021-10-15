@@ -16,9 +16,9 @@ class IGSaver extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'IGSaver',
-      initialRoute: Loading.route,
+      initialRoute: '/',
       routes: {
-        Loading.route: (context) => Loading(),
+        // Loading.route: (context) => Loading(),
         Home.route: (context) => Home(),
         Settings.route: (context) => Settings(),
         History.route: (context) => History(),
