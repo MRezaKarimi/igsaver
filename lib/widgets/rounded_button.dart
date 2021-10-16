@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:igsaver/constants.dart';
 
 class RoundedButton extends StatelessWidget {
+  final enabled;
   final String text;
   final void Function() onPressed;
 
-  RoundedButton({required this.text, required this.onPressed});
+  RoundedButton(
+      {required this.text, required this.onPressed, this.enabled: true});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class RoundedButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: kPrimaryColor,
+          color: enabled ? kPrimaryColor : kPrimaryInactiveColor,
           fontSize: 18,
         ),
       ),
@@ -22,18 +24,23 @@ class RoundedButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        side: BorderSide(color: kPrimaryColor, width: 2),
+        side: BorderSide(
+          color: enabled ? kPrimaryColor : kPrimaryInactiveColor,
+          width: 2,
+        ),
       ),
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : () {},
     );
   }
 }
 
 class FilledRoundedButton extends StatelessWidget {
+  final enabled;
   final String text;
   final void Function() onPressed;
 
-  FilledRoundedButton({required this.text, required this.onPressed});
+  FilledRoundedButton(
+      {required this.text, required this.onPressed, this.enabled: true});
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +53,14 @@ class FilledRoundedButton extends StatelessWidget {
         ),
       ),
       style: OutlinedButton.styleFrom(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: enabled ? kPrimaryColor : kPrimaryInactiveColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        side: BorderSide(color: kPrimaryColor),
+        side:
+            BorderSide(color: enabled ? kPrimaryColor : kPrimaryInactiveColor),
       ),
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : () {},
     );
   }
 }
