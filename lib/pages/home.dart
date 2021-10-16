@@ -14,30 +14,46 @@ import 'package:igsaver/pages/settings.dart';
 import 'package:igsaver/services/clipboard_monitor.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 
+import 'package:igsaver/mixins/initialize.dart';
+
 import 'package:igsaver/widgets/rounded_dialog.dart';
 import 'package:igsaver/widgets/rounded_textfield.dart';
 import 'package:igsaver/widgets/rounded_button.dart';
 import 'package:igsaver/widgets/error_dialog.dart';
 
 class Home extends StatefulWidget {
-  static const route = '/home';
+  static const route = '/';
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home>
+    with SingleTickerProviderStateMixin, InitializeMixin {
   var igPostDownloader = InstagramPostDownloader();
   var igProfileDownloader = InstagramProfileDownloader();
-  var clipboardMonitor = ClipboardMonitor();
-
-  String? url;
+  var _flex = 1.0;
   var username = '';
+  String? url;
 
-  @override
-  void initState() {
-    super.initState();
-    clipboardMonitor.start();
+  void _startupAnimation() {
+    var controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+      lowerBound: 1.0,
+      upperBound: 3000.0,
+    );
+    Animation<double> animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
+    );
+    animation.addListener(() {
+      // print(controller.value);
+      setState(() {
+        _flex = controller.value;
+      });
+    });
+    controller.forward();
   }
 
   Future<void> _showUsernameInputDialog() async {
@@ -112,6 +128,12 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    initialize(context, _startupAnimation);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -121,7 +143,7 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              flex: 2,
+              flex: 5000 - _flex.toInt(),
               child: Center(
                 child: Text(
                   'IGSaver',
@@ -134,7 +156,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             Expanded(
-              flex: 3,
+              flex: _flex.toInt(),
               child: Container(
                 padding:
                     EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 20),
