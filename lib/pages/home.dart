@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/services.dart' hide Clipboard;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:igsaver/constants.dart';
-import 'package:igsaver/exceptions/exceptions.dart';
+import 'package:igsaver/exceptions.dart';
 
 import 'package:igsaver/pages/history.dart';
 import 'package:igsaver/pages/profile_download.dart';

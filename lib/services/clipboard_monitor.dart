@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:igsaver/exceptions/exceptions.dart';
+import 'package:igsaver/exceptions.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 import 'package:igsaver/services/settings_service.dart';
 

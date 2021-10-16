@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:igsaver/mixins/url_validator.dart';
 import 'package:igsaver/models/posts_list.dart';
 import 'file_downloader.dart';
-import 'package:igsaver/exceptions/exceptions.dart';
+import 'package:igsaver/exceptions.dart';
 
 /// Base utilities for downloading from instagram.
 class InstagramDownloader {
