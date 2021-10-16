@@ -107,7 +107,7 @@ class _HomeState extends State<Home>
                       context,
                       title: 'Oops! Something went wrong!',
                       message:
-                          'Try again after a while or report problem to developer.',
+                          'Try again later or report the problem to developer.',
                     );
                   }
                 }
