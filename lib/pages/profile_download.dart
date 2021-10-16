@@ -123,13 +123,11 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                         ),
                       ),
                       SizedBox(width: 5),
-                      Icon(
-                        CupertinoIcons.check_mark_circled_solid,
-                        size: 15,
-                        color: userInfo['is_verified']
-                            ? Colors.black
-                            : Colors.transparent,
-                      ),
+                      if (userInfo['is_verified'])
+                        Icon(
+                          CupertinoIcons.check_mark_circled_solid,
+                          size: 15,
+                        ),
                     ],
                   ),
                   Text(
@@ -139,6 +137,20 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                       fontSize: 15,
                     ),
                   ),
+                  if (userInfo['is_private'])
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.info,
+                          size: 15,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Account is private',
+                        ),
+                      ],
+                    ),
                   SizedBox(height: 30),
                 ],
               ),
@@ -148,6 +160,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
               children: [
                 RoundedButton(
                   text: 'Select Posts',
+                  enabled: !userInfo['is_private'],
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
@@ -160,6 +173,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                 ),
                 FilledRoundedButton(
                   text: 'Download All',
+                  enabled: !userInfo['is_private'],
                   onPressed: () {
                     _showDownloadConfirmDialog(int.parse(userInfo['id']));
                   },
