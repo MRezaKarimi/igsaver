@@ -1,9 +1,9 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:igsaver/mixins/url_validator.dart';
 import 'package:igsaver/models/posts_list.dart';
 import 'file_downloader.dart';
-import 'package:igsaver/services/url_validator.dart';
 import 'package:igsaver/exceptions/exceptions.dart';
 
 /// Base utilities for downloading from instagram.
@@ -94,15 +94,14 @@ class InstagramDownloader {
 }
 
 /// Provides method for downloading a single post.
-class InstagramPostDownloader extends InstagramDownloader {
-  final urlValidator = URLValidator();
-
+class InstagramPostDownloader extends InstagramDownloader
+    with URLValidatorMixin {
   Future<void> downloadPost(String url, bool imagesOnly) async {
-    if (!urlValidator.isValid(url)) {
+    if (!isValid(url)) {
       throw InvalidUrlException();
     }
 
-    var cleanedUrl = urlValidator.removeParams(url);
+    var cleanedUrl = removeParams(url);
 
     if (cleanedUrl == '') {
       throw InvalidUrlException();

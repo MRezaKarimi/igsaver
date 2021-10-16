@@ -1,5 +1,5 @@
 /// Validates and cleans instagram urls
-class URLValidator {
+mixin URLValidatorMixin {
   var _removeParamsRegEx = RegExp(
       r"https:\/\/www\.instagram\.com\/(p|tv|reel)\/([\w\-]+)\/",
       caseSensitive: false);
