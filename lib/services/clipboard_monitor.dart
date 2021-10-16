@@ -7,13 +7,9 @@ import 'package:igsaver/services/settings_service.dart';
 /// Utilities for monitoring clipboard and auto-download instagram posts when new URL
 /// copied to the clipboard.
 class ClipboardMonitor {
-  final duration = Duration(milliseconds: 500);
-  final settings = SettingsService();
-  final igPostDownloader = InstagramPostDownloader();
-
   /// Reads clipboard data in fixed time intervals and waits for new data.
   /// If a new data copied to the clipboard, it returns this data as [Stream].
-  Stream<String> _getClipboardData() async* {
+  static Stream<String> _getClipboardData() async* {
     var currentData = '';
 
     while (true) {
@@ -24,13 +20,16 @@ class ClipboardMonitor {
           yield currentData;
         }
       }
-      await Future.delayed(duration);
+      await Future.delayed(Duration(milliseconds: 500));
     }
   }
 
   /// Listens to [_getClipboardData] for new clipboard data.
   /// If new data is available, calls [InstagramPostDownloader.downloadPost].
-  void start() async {
+  static void start() async {
+    final settings = SettingsService();
+    final igPostDownloader = InstagramPostDownloader();
+
     if (settings.get(SettingsService.watchClipboard, true)) {
       await for (var data in _getClipboardData()) {
         try {
