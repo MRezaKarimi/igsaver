@@ -11,7 +11,6 @@ import 'package:igsaver/pages/history.dart';
 import 'package:igsaver/pages/profile_download.dart';
 import 'package:igsaver/pages/settings.dart';
 
-import 'package:igsaver/services/clipboard_monitor.dart';
 import 'package:igsaver/services/instagram_downloader.dart';
 
 import 'package:igsaver/mixins/initialize.dart';
@@ -247,10 +246,4 @@ class _HomeState extends State<Home>
       ),
     );
   }
-
-  /*@override
-  void dispose() {
-    clipboard.stop();
-    super.dispose();
-  }*/
 }
