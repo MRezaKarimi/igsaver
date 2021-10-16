@@ -89,12 +89,6 @@ class _HomeState extends State<Home>
                       title: 'User Not Found!',
                       message: '',
                     );
-                  } on PrivateAccountException {
-                    ErrorDialog.show(
-                      context,
-                      title: 'Oops! Account is private',
-                      message: '',
-                    );
                   } on AccountHasNoPostException {
                     ErrorDialog.show(
                       context,

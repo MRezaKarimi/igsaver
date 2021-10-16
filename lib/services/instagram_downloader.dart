@@ -134,10 +134,6 @@ class InstagramProfileDownloader extends InstagramDownloader {
 
     var userInfo = jsonDecode(response.body)['graphql']['user'];
 
-    if (userInfo['is_private']) {
-      throw PrivateAccountException();
-    }
-
     if (userInfo['edge_owner_to_timeline_media']['count'] == 0) {
       throw AccountHasNoPostException();
     }
@@ -146,6 +142,7 @@ class InstagramProfileDownloader extends InstagramDownloader {
       'id': userInfo['id'],
       'name': userInfo['full_name'],
       'username': userInfo['username'],
+      'is_private': userInfo['is_private'],
       'is_verified': userInfo['is_verified'],
       'profilePicUrl': userInfo['profile_pic_url_hd'],
       'followers': userInfo['edge_followed_by']['count'],
