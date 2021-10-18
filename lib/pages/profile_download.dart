@@ -108,10 +108,12 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                     ),
                     backgroundImage: NetworkImage(userInfo['profilePicUrl']),
                   ),
+                  SizedBox(height: 30),
                   Text(
                     userInfo['name'],
                     style: TextStyle(fontSize: 20),
                   ),
+                  SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -130,6 +132,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                         ),
                     ],
                   ),
+                  SizedBox(height: 30),
                   Text(
                     '${userInfo['postCount']} Posts | $followers Followers',
                     style: TextStyle(
@@ -137,6 +140,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                       fontSize: 15,
                     ),
                   ),
+                  SizedBox(height: 30),
                   if (userInfo['is_private'])
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +155,11 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                         ),
                       ],
                     ),
-                  SizedBox(height: 30),
+                  Expanded(
+                    child: Container(
+                      child: null,
+                    ),
+                  )
                 ],
               ),
             ),
