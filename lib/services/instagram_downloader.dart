@@ -134,10 +134,6 @@ class InstagramProfileDownloader extends InstagramDownloader {
 
     var userInfo = jsonDecode(response.body)['graphql']['user'];
 
-    if (userInfo['edge_owner_to_timeline_media']['count'] == 0) {
-      throw AccountHasNoPostException();
-    }
-
     return {
       'id': userInfo['id'],
       'name': userInfo['full_name'],
