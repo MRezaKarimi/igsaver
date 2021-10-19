@@ -186,6 +186,27 @@ class _HomeState extends State<Home>
                                 message:
                                     'The given URL is not a valid instagram URL.',
                               );
+                            } on PostNotFoundException {
+                              ErrorDialog.show(
+                                context,
+                                title: 'Post Not Found!',
+                                message:
+                                    'Maybe URL is broken or post belongs to a private account.',
+                              );
+                            } on SocketException {
+                              ErrorDialog.show(
+                                context,
+                                title: 'Connection Error!',
+                                message:
+                                    'Check if your device have internet connection and try again.',
+                              );
+                            } catch (_) {
+                              ErrorDialog.show(
+                                context,
+                                title: 'Oops! Something went wrong!',
+                                message:
+                                    'Try again later or report the problem to developer.',
+                              );
                             }
                           },
                         ),
