@@ -89,12 +89,6 @@ class _HomeState extends State<Home>
                       title: 'User Not Found!',
                       message: '',
                     );
-                  } on AccountHasNoPostException {
-                    ErrorDialog.show(
-                      context,
-                      title: 'Account has no post!',
-                      message: '',
-                    );
                   } on SocketException {
                     ErrorDialog.show(
                       context,
