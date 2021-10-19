@@ -69,7 +69,6 @@ mixin InitializeMixin {
   /// - check/ask storage permission
   /// - create directories for saving images and videos
   void initialize(BuildContext context, OnSuccess onSuccess) async {
-    await Future.delayed(Duration(milliseconds: 500));
     await SettingsService.initialize();
     bool isConnected = await _checkNetworkConnection(context);
     bool hasPermission = await _checkStoragePermission(context);
