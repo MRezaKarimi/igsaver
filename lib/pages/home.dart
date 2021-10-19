@@ -37,13 +37,13 @@ class _HomeState extends State<Home>
   void _startupAnimation() {
     var controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 600),
       lowerBound: 1.0,
       upperBound: 3000.0,
     );
     Animation<double> animation = CurvedAnimation(
       parent: controller,
-      curve: Curves.decelerate,
+      curve: Curves.easeOut,
     );
     animation.addListener(() {
       // print(controller.value);
