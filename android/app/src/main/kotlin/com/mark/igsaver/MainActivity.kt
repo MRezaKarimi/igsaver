@@ -1,4 +1,4 @@
-package com.mark.igsaver.igsaver
+package com.mark.igsaver
 
 import io.flutter.embedding.android.FlutterActivity
 
