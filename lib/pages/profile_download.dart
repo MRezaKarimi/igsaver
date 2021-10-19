@@ -108,64 +108,78 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                     ),
                     backgroundImage: NetworkImage(userInfo['profilePicUrl']),
                   ),
-                  Text(
-                    userInfo['name'],
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '@${userInfo['username']}',
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      if (userInfo['is_verified'])
-                        Icon(
-                          CupertinoIcons.check_mark_circled_solid,
-                          size: 15,
-                        ),
-                    ],
-                  ),
-                  Text(
-                    '${userInfo['postCount']} Posts | $followers Followers',
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 15,
-                    ),
-                  ),
-                  if (userInfo['is_private'])
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.info,
-                          size: 15,
-                        ),
-                        SizedBox(width: 5),
+                  SizedBox(height: 15),
+                  Container(
+                    height: 120,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
                         Text(
-                          'Account is private',
+                          userInfo['name'],
+                          style: TextStyle(fontSize: 20),
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '@${userInfo['username']}',
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 15,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            if (userInfo['is_verified'])
+                              Icon(
+                                CupertinoIcons.check_mark_circled_solid,
+                                size: 15,
+                              ),
+                          ],
+                        ),
+                        Text(
+                          '${userInfo['postCount']} Posts | $followers Followers',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 15,
+                          ),
+                        ),
+                        if (userInfo['is_private'])
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.info,
+                                size: 15,
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Account is private',
+                              ),
+                            ],
+                          ),
+                        if (userInfo['postCount'] == 0)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.info,
+                                size: 15,
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Account has no post',
+                              ),
+                            ],
+                          ),
+                        // SizedBox(height: 30),
                       ],
                     ),
-                  if (userInfo['postCount'] == 0)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.info,
-                          size: 15,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Account has no post',
-                        ),
-                      ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: null,
                     ),
-                  SizedBox(height: 30),
+                  )
                 ],
               ),
             ),
