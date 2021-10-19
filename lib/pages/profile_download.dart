@@ -151,6 +151,20 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                         ),
                       ],
                     ),
+                  if (userInfo['postCount'] == 0)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.info,
+                          size: 15,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Account has no post',
+                        ),
+                      ],
+                    ),
                   SizedBox(height: 30),
                 ],
               ),
@@ -160,7 +174,8 @@ class _ProfileDownloadState extends State<ProfileDownload> {
               children: [
                 RoundedButton(
                   text: 'Select Posts',
-                  enabled: !userInfo['is_private'],
+                  enabled:
+                      !(userInfo['is_private'] || userInfo['postCount'] == 0),
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
@@ -173,7 +188,8 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                 ),
                 FilledRoundedButton(
                   text: 'Download All',
-                  enabled: !userInfo['is_private'],
+                  enabled:
+                      !(userInfo['is_private'] || userInfo['postCount'] == 0),
                   onPressed: () {
                     _showDownloadConfirmDialog(int.parse(userInfo['id']));
                   },
