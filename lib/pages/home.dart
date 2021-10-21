@@ -94,14 +94,13 @@ class _HomeState extends State<Home>
                       context,
                       title: 'Connection Error!',
                       message:
-                          'Check if your device have internet connection and try again.',
+                          'Make sure your device has internet connection and try again.',
                     );
                   } catch (_) {
                     ErrorDialog.show(
                       context,
                       title: 'Oops! Something went wrong!',
-                      message:
-                          'Try again later or report the problem to developer.',
+                      message: 'Disconnect your VPN and try again.',
                     );
                   }
                 }
@@ -198,14 +197,13 @@ class _HomeState extends State<Home>
                                 context,
                                 title: 'Connection Error!',
                                 message:
-                                    'Check if your device have internet connection and try again.',
+                                    'Make sure your device has internet connection and try again.',
                               );
                             } catch (_) {
                               ErrorDialog.show(
                                 context,
                                 title: 'Oops! Something went wrong!',
-                                message:
-                                    'Try again later or report the problem to developer.',
+                                message: 'Disconnect your VPN and try again.',
                               );
                             }
                           },
