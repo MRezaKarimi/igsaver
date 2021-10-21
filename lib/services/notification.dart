@@ -17,14 +17,15 @@ class Notification {
     );
   }
 
-  void show(String filename) {
+  void show(String filename, String title) {
+    AwesomeNotifications().dismiss(filename.hashCode);
     AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: filename.hashCode,
         channelKey: 'download_notification',
-        title: 'Download Completed',
+        title: title,
         body: filename,
-        ticker: 'Download Completed',
+        ticker: title,
         autoCancel: true,
       ),
     );
