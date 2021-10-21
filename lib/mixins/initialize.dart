@@ -43,6 +43,7 @@ mixin InitializeMixin {
   /// Otherwise requests for permission. If permission denied again,
   /// it shows an error dialog returns false.
   Future<bool> _checkStoragePermission(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 1));
     if (await Permission.manageExternalStorage.isGranted ||
         await Permission.manageExternalStorage.isRestricted) {
       return true;
