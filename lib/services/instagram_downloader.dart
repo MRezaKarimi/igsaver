@@ -79,7 +79,7 @@ class InstagramDownloader {
     String videoURL = data['video_url'];
     String videoFilename = "${data['owner']['username']}";
 
-    if (data['title'] == null) {
+    if (data['title'] == null || data['title'] == '') {
       if (data['shortcode'] == null) {
         videoFilename = "$videoFilename ${data['id']}.mp4";
       } else {
