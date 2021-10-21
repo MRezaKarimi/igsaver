@@ -26,14 +26,15 @@ class FileDownloader {
 
   Future<void> download(String url, String filename,
       {bool isVideo: false}) async {
+    var showNotification = settings.get(SettingsService.showNotification, true);
+
     if (isVideo) {
+      if (showNotification) notification.show(filename, 'Download Started');
       await _dio.download(url, '$_videosDownloadPath/$filename');
     } else {
       await _dio.download(url, '$_imagesDownloadPath/$filename');
     }
 
-    if (settings.get(SettingsService.showNotification, true)) {
-      notification.show(filename);
-    }
+    if (showNotification) notification.show(filename, 'Download Completed');
   }
 }
