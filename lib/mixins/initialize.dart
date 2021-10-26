@@ -44,11 +44,13 @@ mixin InitializeMixin {
   /// it shows an error dialog returns false.
   Future<bool> _checkStoragePermission(BuildContext context) async {
     await Future.delayed(Duration(seconds: 1));
-    if (await Permission.manageExternalStorage.isGranted ||
-        await Permission.manageExternalStorage.isRestricted) {
-      return true;
-    } else {
-      var status = await Permission.manageExternalStorage.request();
+
+    /// For android version <=10, requests for storage permissions.
+    if (await Permission.manageExternalStorage.isRestricted) {
+      if (await Permission.storage.isGranted) {
+        return true;
+      }
+      var status = await Permission.storage.request();
       if (status == PermissionStatus.granted) {
         return true;
       } else {
@@ -56,11 +58,28 @@ mixin InitializeMixin {
           context,
           title: 'Storage Permission Denied',
           message:
-              'This app needs storage access permission to work. Go to your device\'s settings and grant permission',
+              'This app needs storage permission to work. Go to your device\'s settings and grant permission',
         );
 
         return false;
       }
+    }
+
+    /// For android version 11<=, requests for manage external storage permission.
+    if (await Permission.manageExternalStorage.isGranted) {
+      return true;
+    }
+    var status = await Permission.manageExternalStorage.request();
+    if (status == PermissionStatus.granted) {
+      return true;
+    } else {
+      ErrorDialog.show(
+        context,
+        title: 'Storage Permission Denied',
+        message:
+            'This app needs storage permission to work. Go to your device\'s settings and grant permission',
+      );
+      return false;
     }
   }
 
