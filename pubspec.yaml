@@ -70,9 +70,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Gabriola
+    - family: Vazir
       fonts:
-        - asset: fonts/Gabriola.ttf
+        - asset: fonts/Vazir-Regular.ttf
     
     - family: FreeScript
       fonts:

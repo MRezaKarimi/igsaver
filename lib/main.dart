@@ -24,6 +24,7 @@ class IGSaver extends StatelessWidget {
         ImageViewer.route: (context) => ImageViewer(),
         SelectPost.route: (context) => SelectPost(),
       },
+      theme: ThemeData(fontFamily: 'Vazir'),
     );
   }
 }
