@@ -26,9 +26,21 @@ class IGSaver extends StatelessWidget {
         ImageViewer.route: (context) => ImageViewer(),
         SelectPost.route: (context) => SelectPost(),
       },
-      theme: ThemeData(fontFamily: 'Vazir'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      builder: (context, navigator) {
+        /// Set Vazir as default font family when device language is 'fa'.
+        /// Otherwise, don't change it.
+        var lang = Localizations.localeOf(context).languageCode;
+        if (lang == 'fa') {
+          return Theme(
+            data: ThemeData(fontFamily: 'Vazir'),
+            child: navigator!,
+          );
+        } else {
+          return navigator!;
+        }
+      },
     );
   }
 }
