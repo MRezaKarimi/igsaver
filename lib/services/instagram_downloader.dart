@@ -126,8 +126,8 @@ class InstagramProfileDownloader extends InstagramDownloader {
 
   /// Gets [username] of an instagram user and returns basic infos about user.
   Future<Map> getUserInfo(String username) async {
-    var response =
-        await _get('https://www.instagram.com/$username/channel/?__a=1');
+    var response = await _get(
+        'https://www.instagram.com/${username.trim()}/channel/?__a=1');
 
     if (response.statusCode == 404) {
       throw UserNotFoundException();
