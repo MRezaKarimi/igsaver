@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:igsaver/services/clipboard_monitor.dart';
 import 'package:igsaver/services/file_downloader.dart';
 import 'package:igsaver/services/settings_service.dart';
@@ -29,9 +31,8 @@ mixin InitializeMixin {
     } else {
       ErrorDialog.show(
         context,
-        title: 'No Internet Connection',
-        message:
-            'Make sure your device is connected to the network and then try again.',
+        title: AppLocalizations.of(context)!.noInternetConnection,
+        message: AppLocalizations.of(context)!.noInternetConnectionMessage,
       );
       return false;
     }
@@ -56,9 +57,8 @@ mixin InitializeMixin {
       } else {
         ErrorDialog.show(
           context,
-          title: 'Storage Permission Denied',
-          message:
-              'This app needs storage permission to work. Go to your device\'s settings and grant permission',
+          title: AppLocalizations.of(context)!.storagePermission,
+          message: AppLocalizations.of(context)!.storagePermissionMessage,
         );
 
         return false;
@@ -75,9 +75,8 @@ mixin InitializeMixin {
     } else {
       ErrorDialog.show(
         context,
-        title: 'Storage Permission Denied',
-        message:
-            'This app needs storage permission to work. Go to your device\'s settings and grant permission',
+        title: AppLocalizations.of(context)!.storagePermission,
+        message: AppLocalizations.of(context)!.storagePermissionMessage,
       );
       return false;
     }

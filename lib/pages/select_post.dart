@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/models/posts_list.dart';
@@ -13,6 +14,7 @@ class SelectPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
     Map args = ModalRoute.of(context)?.settings.arguments as Map;
     int userID = int.parse(args['userID']);
     var profileDownloader = InstagramProfileDownloader();
@@ -25,10 +27,10 @@ class SelectPost extends StatelessWidget {
           elevation: 0,
           title: Consumer<PostsList>(builder: (context, postsList, _) {
             if (Provider.of<PostsList>(context).length == 0) {
-              return Text('Select Posts');
+              return Text(localization.selectPosts);
             } else {
               return Text(
-                  '${Provider.of<PostsList>(context).length} Post Selected');
+                  '${Provider.of<PostsList>(context).length} ${localization.postSelected}');
             }
           }),
         ),
@@ -61,13 +63,13 @@ class SelectPost extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return Center(
                         child: Text(
-                          'An Unexpected Error Occurred ',
+                          localization.unexpectedError,
                           style: TextStyle(fontSize: 16),
                         ),
                       );
                     } else {
                       return Center(
-                        child: Text('Loading Data'),
+                        child: Text(localization.loadingData),
                       );
                     }
                   },
@@ -76,7 +78,7 @@ class SelectPost extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: FilledRoundedButton(
-                  text: 'Download Selected',
+                  text: localization.downloadSelected,
                   onPressed: () {
                     profileDownloader.downloadSelectedPosts(
                         Provider.of<PostsList>(context, listen: false));

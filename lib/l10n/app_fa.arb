@@ -1,0 +1,46 @@
+{
+    "pasteLinkHere": "لینک را وارد کنید",
+    "usernameInputHint": "نام کاربری بدون @",
+    "search": "جستجو",
+    "downloadProfile": "دانلود پروفایل",
+    "history": "تاریخچه",
+    "settings": "تنظیمات",
+    "selectPosts": "انتخاب پست ها",
+    "downloadAll": "دانلود همه",
+    "postSelected": "پست انتخاب شده",
+    "downloadSelected": "دانلود انتخاب شده ها",
+    "downloadAllPosts": "دانلود همه پست ها",
+    "downloadImagesOnly": "دانلود عکس ها",
+    "downloadProfilePosts": "دانلود پست های پروفایل",
+    "saveToGallery": "ذخیره در گالری",
+    "posts": "پست",
+    "followers": "فالوور",
+
+
+    "watchClipboard": "پایش کلیپ بورد",
+    "watchClipboardDesc": "هنگامی که URL جدید کپی شد، بصورت خودکار دانلود را شروع کن. این ویژگی تنها در اندروید 9 و قبل از آن کار می کند.",
+    "onlyDownloadImages": "فقط دانلود تصاویر",
+    "onlyDownloadImagesDesc": "در صورت فعال بودن این گزینه، فقط تصاویر بصورت خودکار دانلود می شوند و ویدیو ها نادیده گرفته می شوند.",
+    "showNotification": "نمایش اعلان",
+    "showNotificationDesc": "بعد از اتمام دانلود، اعلان مربوطه نمایش داده شود.",
+
+    "accountIsPrivate": "حساب کاربری خصوصی است",
+    "accountHasNoPost": "حساب کاربری هیچ پستی ندارد",
+    
+    "userNotFound": "حساب کاربری یافت نشد!",
+    "noInternetConnection": "اتصال اینترنت برقرار نیست",
+    "noInternetConnectionMessage": "مطمئن شوید که دستگاهتان به اینترنت متصل است و دوباره امتحان کنید.",
+    "unknownError": "متاسفم! خطایی رخ داد",
+    "unknownErrorMessage": "مطمئن شوید که VPN غیرفعال است و دوباره امتحان کنید.",
+    "invalidURL": "لینک نامعتبر است",
+    "invalidURLMessage": "لینک داده شده یک URL معتبر اینستاگرام نیست.",
+    "postNotFound": "پست یافت نشد!",
+    "postNotFoundMessage": "لینک خراب است یا متعلق به یک حساب کاربری خصوصی است.",
+    "storagePermission": "دسترسی به حافظه رد شد",
+    "storagePermissionMessage": "این برنامه برای کارکردن نیاز به مجوز دسترسی به حافظه دارد. به تنظیمات رفته و مجوز حافظه برای این برنامه را فعال کنید.",
+    
+    "unexpectedError": "یک خظای غیرمنتظره رخ داد",
+    "loadingImages": "در حال بارگیری تصاویر",
+    "loadingData": "در حال بارگیری داده ها"
+
+}

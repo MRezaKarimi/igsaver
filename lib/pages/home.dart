@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/exceptions.dart';
@@ -58,11 +59,13 @@ class _HomeState extends State<Home>
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        var localization = AppLocalizations.of(context)!;
+
         return RoundedDialog(
-          title: Text('Download Profile Posts'),
+          title: Text(localization.downloadProfilePosts),
           children: <Widget>[
             RoundedTextField(
-              hint: 'username without @',
+              hint: localization.usernameInputHint,
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 username = value;
@@ -70,7 +73,7 @@ class _HomeState extends State<Home>
             ),
             SizedBox(height: 15),
             FilledRoundedButton(
-              text: 'Search',
+              text: localization.search,
               onPressed: () async {
                 if (username != '') {
                   try {
@@ -86,21 +89,20 @@ class _HomeState extends State<Home>
                   } on UserNotFoundException {
                     ErrorDialog.show(
                       context,
-                      title: 'User Not Found!',
+                      title: localization.userNotFound,
                       message: '',
                     );
                   } on SocketException {
                     ErrorDialog.show(
                       context,
-                      title: 'Connection Error!',
-                      message:
-                          'Make sure your device has internet connection and try again.',
+                      title: localization.noInternetConnection,
+                      message: localization.noInternetConnectionMessage,
                     );
                   } catch (_) {
                     ErrorDialog.show(
                       context,
-                      title: 'Oops! Something went wrong!',
-                      message: 'Disconnect your VPN and try again.',
+                      title: localization.unknownError,
+                      message: localization.unknownErrorMessage,
                     );
                   }
                 }
@@ -120,6 +122,8 @@ class _HomeState extends State<Home>
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kPrimaryColor,
@@ -161,7 +165,7 @@ class _HomeState extends State<Home>
                       children: <Widget>[
                         Expanded(
                           child: RoundedTextField(
-                            hint: 'Paste Link Here',
+                            hint: localization.pasteLinkHere,
                             keyboardType: TextInputType.url,
                             onChanged: (value) {
                               url = value;
@@ -181,29 +185,27 @@ class _HomeState extends State<Home>
                             } on InvalidUrlException {
                               ErrorDialog.show(
                                 context,
-                                title: 'Invalid URL!',
-                                message:
-                                    'The given URL is not a valid instagram URL.',
+                                title: localization.invalidURL,
+                                message: localization.invalidURLMessage,
                               );
                             } on PostNotFoundException {
                               ErrorDialog.show(
                                 context,
-                                title: 'Post Not Found!',
-                                message:
-                                    'Maybe URL is broken or post belongs to a private account.',
+                                title: localization.postNotFound,
+                                message: localization.postNotFoundMessage,
                               );
                             } on SocketException {
                               ErrorDialog.show(
                                 context,
-                                title: 'Connection Error!',
+                                title: localization.noInternetConnection,
                                 message:
-                                    'Make sure your device has internet connection and try again.',
+                                    localization.noInternetConnectionMessage,
                               );
                             } catch (_) {
                               ErrorDialog.show(
                                 context,
-                                title: 'Oops! Something went wrong!',
-                                message: 'Disconnect your VPN and try again.',
+                                title: localization.unknownError,
+                                message: localization.unknownErrorMessage,
                               );
                             }
                           },
@@ -222,10 +224,10 @@ class _HomeState extends State<Home>
                             color: kPrimaryColor,
                             size: 30,
                           ),
-                          tooltip: 'History',
+                          tooltip: localization.history,
                         ),
                         FilledRoundedButton(
-                          text: 'Download Profile',
+                          text: localization.downloadProfile,
                           onPressed: () {
                             _showUsernameInputDialog();
                           },
@@ -239,7 +241,7 @@ class _HomeState extends State<Home>
                             color: kPrimaryColor,
                             size: 30,
                           ),
-                          tooltip: 'Settings',
+                          tooltip: localization.settings,
                         ),
                       ],
                     ),

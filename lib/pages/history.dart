@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/image_viewer.dart';
 
@@ -21,12 +23,14 @@ class History extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        title: Text('History'),
+        title: Text(localization.history),
       ),
       body: SafeArea(
         child: FutureBuilder<List<File>>(
@@ -64,14 +68,14 @@ class History extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
-                  'An Unexpected Error Occurred ',
+                  localization.unexpectedError,
                   style: TextStyle(fontSize: 16),
                 ),
               );
             } else {
               return Center(
                 child: Text(
-                  'Loading Images',
+                  localization.loadingImages,
                   style: TextStyle(fontSize: 16),
                 ),
               );

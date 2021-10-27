@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/services/settings_service.dart';
 import 'package:igsaver/widgets/settings_card.dart';
@@ -19,21 +21,21 @@ class _SettingsState extends State<Settings> {
     bool notificationSwitch =
         settings.get(SettingsService.showNotification, true);
     bool imagesOnlySwitch = settings.get(SettingsService.imagesOnly, true);
+    var localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        title: Text('Settings'),
+        title: Text(localization.settings),
       ),
       body: Container(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
             SettingsCard(
-              title: 'Watch Clipboard',
-              description:
-                  'Automatically download post when URL copied to the clipboard. Only works in Android 9 and below. Restart required if changed.',
+              title: localization.watchClipboard,
+              description: localization.watchClipboardDesc,
               switchValue: clipboardSwitch,
               switchCallback: (bool value) {
                 setState(() {
@@ -43,9 +45,8 @@ class _SettingsState extends State<Settings> {
               },
             ),
             SettingsCard(
-              title: 'Only Download Images',
-              description:
-                  'Skip downloading videos when new url copied to the clipboard. Turning this off, results in more data usage.',
+              title: localization.onlyDownloadImages,
+              description: localization.onlyDownloadImagesDesc,
               switchValue: imagesOnlySwitch,
               switchCallback: (bool value) {
                 setState(() {
@@ -55,8 +56,8 @@ class _SettingsState extends State<Settings> {
               },
             ),
             SettingsCard(
-              title: 'Show Notification',
-              description: 'Show notification when download completed.',
+              title: localization.showNotification,
+              description: localization.showNotificationDesc,
               switchValue: notificationSwitch,
               switchCallback: (bool value) {
                 setState(() {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:igsaver/pages/image_viewer.dart';
 import 'package:igsaver/pages/select_post.dart';
 import 'package:igsaver/pages/history.dart';
@@ -25,6 +27,8 @@ class IGSaver extends StatelessWidget {
         SelectPost.route: (context) => SelectPost(),
       },
       theme: ThemeData(fontFamily: 'Vazir'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

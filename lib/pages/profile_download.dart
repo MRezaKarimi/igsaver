@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:igsaver/constants.dart';
 import 'package:igsaver/pages/image_viewer.dart';
 import 'package:igsaver/pages/select_post.dart';
@@ -37,20 +39,22 @@ class _ProfileDownloadState extends State<ProfileDownload> {
   /// 1. Download Images Only: only download images and ignore videos and IGTVs
   /// 2. Download All Posts: download all posts, images and videos
   Future<void> _showDownloadConfirmDialog(int userID) async {
+    var localization = AppLocalizations.of(context)!;
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return RoundedDialog(
-          title: Text('Download Profile Posts'),
+          title: Text(localization.downloadAllPosts),
           children: <Widget>[
             RoundedButton(
-              text: 'Download Images Only',
+              text: localization.downloadImagesOnly,
               onPressed: () async {
                 profileDownloader.downloadAllPosts(userID, true);
               },
             ),
             FilledRoundedButton(
-              text: 'Download All Posts',
+              text: localization.downloadAllPosts,
               onPressed: () async {
                 profileDownloader.downloadAllPosts(userID, false);
               },
@@ -63,6 +67,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     Map userInfo = args['userInfo'];
     var followers = _getRoundedFollowers(userInfo['followers']);
@@ -73,7 +78,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        title: Text('Download Profile'),
+        title: Text(localization.downloadProfile),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -94,7 +99,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                           arguments: {
                             'image': NetworkImage(userInfo['profilePicUrl']),
                             'child': FilledRoundedButton(
-                              text: 'Save To Gallery',
+                              text: localization.saveToGallery,
                               onPressed: () {
                                 fileDownloader.download(
                                   userInfo['profilePicUrl'],
@@ -137,7 +142,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                           ],
                         ),
                         Text(
-                          '${userInfo['postCount']} Posts | $followers Followers',
+                          '${userInfo['postCount']} ${localization.posts} | $followers ${localization.followers}',
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 15,
@@ -153,7 +158,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                               ),
                               SizedBox(width: 5),
                               Text(
-                                'Account is private',
+                                localization.accountIsPrivate,
                               ),
                             ],
                           ),
@@ -167,7 +172,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                               ),
                               SizedBox(width: 5),
                               Text(
-                                'Account has no post',
+                                localization.accountHasNoPost,
                               ),
                             ],
                           ),
@@ -187,7 +192,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 RoundedButton(
-                  text: 'Select Posts',
+                  text: localization.selectPosts,
                   enabled:
                       !(userInfo['is_private'] || userInfo['postCount'] == 0),
                   onPressed: () {
@@ -201,7 +206,7 @@ class _ProfileDownloadState extends State<ProfileDownload> {
                   },
                 ),
                 FilledRoundedButton(
-                  text: 'Download All',
+                  text: localization.downloadAll,
                   enabled:
                       !(userInfo['is_private'] || userInfo['postCount'] == 0),
                   onPressed: () {
