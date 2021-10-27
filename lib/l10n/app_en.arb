@@ -18,7 +18,7 @@
     
     "watchClipboard": "Watch Clipboard",
     "watchClipboardDesc": "Automatically download post when URL copied to the clipboard. Only works in Android 9 and below. Restart required if changed.",
-    "onlyDownloadImages": "only Download Images",
+    "onlyDownloadImages": "Only Download Images",
     "onlyDownloadImagesDesc": "Skip downloading videos when new url copied to the clipboard. Turning this off, results in more data usage.",
     "showNotification": "Show Notification",
     "showNotificationDesc": "Show notification when download completed.",
