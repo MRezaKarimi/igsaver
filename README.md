@@ -1,7 +1,7 @@
 ![banner](/screenshots/banner.jpg)
 # IGSaver
 
-An Instagram downloader application made with flutter, which allows you to easily download posts and profile avatars. See more about features in **Screenshots** section.
+An Instagram downloader application made with flutter, which allows you to easily download posts and profile avatars. IGsaver is currently available in two language (english and persian). See more about features in **Screenshots** section.
 
 
 ## Dependencies
