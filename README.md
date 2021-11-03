@@ -19,6 +19,7 @@ Flutter 2.2.3
 - [awesome_notifications](https://pub.dev/packages/awesome_notifications): send notifications to user
 
 ## Download
+[![banner](/screenshots/download.png)](https://apkpure.com/p/com.mark.igsaver)
 
 ## Build
 1. Make sure you have installed and configured flutter and Android SDKs.
